@@ -1,16 +1,28 @@
+#|- SETTING -|
+
+
+from flask import Flask, render_template, request, redirect
 from os import pardir
 from typing import Text
-from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO
 from src.Main.Model.Question import question,questionText
+from src.Main.Controler.Event.PartyNewPlayer import partyNewPlayerControler
+from src.Main.Controler.JoinControler import JoinControler
+from src.Main.Controler.LobbyControler import lobbyControler
+from src.Main.Model.Game import Game
+from src.Main.Model.Party import Party
 import json
+import json as jsonlib
 
-#|- SETTING -|
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
 socketio = SocketIO(app)
 clients = []
 t=0
+
+game = Game()
 
 @socketio.event
 def connect():
@@ -21,6 +33,39 @@ def connect():
 @app.route('/test')
 def QuestionTemplate():
     return render_template('testQuestion.html')
+
+@socketio.on('question')
+def questionEvent(methods=['GET', 'POST']):
+    listQ=[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json()]
+    socketio.emit('my question',listQ[1], callback=messageReceived)
+    #socketio.emit('my question',question.question(1,'test').get_json(), callback=messageReceived)
+
+@socketio.on('reponse')
+def reponseEvent(json, methods=['GET', 'POST']):
+    print(json)
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
+
+@app.route('/join')
+def join():
+    return render_template('join.html')
+
+@app.route('/party/<party_id>')
+def party(party_id):
+    return lobbyControler(request,party_id);
+
+#Lorsque une perssone rejoin une game
+@app.route('/joinGame',methods=["GET", "POST"])
+def join_game():
+    return JoinControler(request,game);
+
+#Event lorsque un joeur rejoin une partie deja existant
+@socketio.on('Evt_party_join')
+def ckEvt_party_join(json):
+    #On rentre dans le controler qui envois une reponce
+    partyNewPlayerControler(json,game,socketio,messageReceived);
 
 @socketio.on('question')
 def questionEvent(methods=['GET', 'POST']):
