@@ -1,6 +1,7 @@
 from src.Main.Model.Player import Player
 import string
 import random # define the random module
+import json as jsonlib
 
 
 class Party():
@@ -21,3 +22,7 @@ class Party():
             print(p)
             plist.append(p.name);
         return plist;
+
+    def sendEventToPlayer(self,eventName,json,socketio,messageReceived):
+        for p in self.playerList:
+         socketio.emit(eventName, jsonlib.dumps(json), callback=messageReceived,room=p.last_session_id)
