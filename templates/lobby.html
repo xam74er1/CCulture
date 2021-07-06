@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'allJsImport.html' %}
+</head>
+<body>
+
+bonjour je suis le lobby
+<div> Vous ete dans la parti {{ party_id }}</div>
+
+<div id="listPlayerDiv">
+<ul id="listPlayer">
+
+
+</ul>
+</div>
+
+<script>
+
+    var partyId ="{{ party_id }}";
+    var playerId = "{{ uuid }}";
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    //Lorsque que lon ce connecte on est pols donc on envois un msg que lon est co
+    socket.emit( 'Evt_party_join', {
+        partyId : partyId,
+        playerId : playerId
+    });
+
+    //action realise losque nimpote quelle player rejoin la partie , cela perme de mettre a jour la liste
+socket.on( 'Evt_party_new_player_as_join', function( evt ) {
+  console.log( evt )
+    var list = JSON.parse(evt)
+    //Si l'ellment n'est pas vide
+  if( typeof evt !== 'undefined' ) {
+      //On clear la list pour mieux la reaficher
+      $("#listPlayer").empty();
+      //On parcoure tout les nom des player qui son present dans la game
+    for (var name of list){
+        //On ajoute a la liste le nom du player qui a rejoin
+        $("#listPlayer").append("<li>"+name+"</li>")
+    }
+  }
+})
+
+
+</script>
+</body>
+</html>

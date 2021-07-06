@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join</title>
+
+    {% include 'allJsImport.html' %}
+
+</head>
+<body>
+<form action="/joinGame" method="POST" id="infoForm">
+    <input type="text" placeholder="Game name" id="gameId" name="gameId">
+
+<input type="text" placeholder="Pseudo" id="pseudoId" name="pseudoId">
+<input type="hidden" name="sid" value="-1" id="sid">
+    <input type="submit">
+
+<!-- <button id="valid"> Valider </button> -->
+</form>
+
+
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+socket.on( 'connect', function() {
+  socket.emit( 'connected', {
+    data: 'User Connected'
+  })
+    var id = socket.io.engine.id
+    $("#sid").val(id)
+ /*
+  var form = $( '#valid' ).click( function( e ) {
+
+
+
+    let user_name = $( 'input.username' ).val()
+    let user_input = $( 'input.message' ).val()
+    socket.emit( 'my event', {
+      user_name : user_name,
+      message : user_input
+    })
+
+  })*/
+})
+</script>
+
+</body>
+</html>
