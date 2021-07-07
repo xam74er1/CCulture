@@ -12,9 +12,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
 socketio = SocketIO(app)
 clients = []
-
 game = Game()
-
+t=Party(3,[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme3','Chirac').get_json()])
 @socketio.event
 def connect():
     print('connection established')
@@ -62,11 +61,20 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 def QuestionTemplate():
     return render_template('testQuestion.html')
 
+
 @socketio.on('question')
 def questionEvent(methods=['GET', 'POST']):
-    listQ=[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json()]
-    socketio.emit('my question',listQ[1], callback=messageReceived)
+    #listQ=[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json()]
+    #socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
+    #socketio.emit('my question',listQ[1], callback=messageReceived)
     #socketio.emit('my question',question.question(1,'test').get_json(), callback=messageReceived)
+    if t.compteur-1 < 0 :
+        print('fin')
+    else :
+        socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
+        t.compteurDown()
+    print(t.compteur)
+   
 
 @socketio.on('reponse')
 def reponseEvent(json, methods=['GET', 'POST']):
