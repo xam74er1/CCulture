@@ -1,8 +1,11 @@
+from flask import session
+
 from src.Main.Model.Party import Party
 from src.Main.Model.Player import Player
 
 
 class Game:
+    curentGame  = None
     def __init__(self):
         self.id = 0;
         self.listParty : [Party] = []
@@ -30,3 +33,18 @@ class Game:
     def getPlayer_Name_List(self,idparty):
         party : Party = self.getParty(idparty);
         return party.getPseudo_Player_List();
+
+    @staticmethod
+    def getGame():
+        return Game.curentGame
+
+    @staticmethod
+    def getPlayer():
+       game :Game = Game.curentGame
+       return game.getPlayerFromUUID(session["uuid"])
+
+    @staticmethod
+    def getParty():
+        game: Game = Game.curentGame
+        player : Player = game.getPlayerFromUUID(session["uuid"])
+        return game.getParty(player.curent_party_id)

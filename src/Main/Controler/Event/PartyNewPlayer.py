@@ -1,4 +1,4 @@
-from flask import Request
+from flask import Request, session
 
 from src.Main.Model import Game
 from src.Main.Model.Party import Party
@@ -10,6 +10,8 @@ from src.Main.Model.Player import Player
 def partyNewPlayerControler(request : Request ,json,game:Game,socketio,messageReceived):
     partyid = json["partyId"]
     playerId = json["playerId"]
+
+    print(session)
 
     #Je recupre le player et la game corespondant
     party : Party = game.getParty(partyid)

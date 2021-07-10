@@ -42,6 +42,9 @@ def JoinControler(request: Request,game : Game):
     if party != None:
 
         url = "/party/"+str(party.id);
+        player.last_session_id = party.id
+
+        Game.getGame()
 
         return redirect(url);
     print("Redirect to join")
