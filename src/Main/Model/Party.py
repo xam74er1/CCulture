@@ -6,11 +6,12 @@ import json as jsonlib
 
 
 class Party():
-    def __init__(self,compteur,questionList):
+    def __init__(self,compteur=0,questionList=[]):
         self.id : str = self.generateRandomUrl(10);
         self.playerList : [Player] = []
         self.questionList :[question] =questionList
         self.compteur: int= compteur
+        self.timeLeft = 0;
 
     def generateRandomUrl(self,size):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=size))

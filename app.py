@@ -13,6 +13,7 @@ app.config['SECRET_KEY'] = 'tmpKey'
 socketio = SocketIO(app)
 clients = []
 game = Game()
+game.curentGame = game
 t=Party(3,[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme3','Chirac').get_json()])
 @socketio.event
 def connect():
@@ -41,7 +42,7 @@ def join_game():
 @socketio.on('Evt_party_join')
 def ckEvt_party_join(json):
     #On rentre dans le controler qui envois une reponce
-    partyNewPlayerControler(json,game,socketio,messageReceived);
+    partyNewPlayerControler(request,json,game,socketio,messageReceived);
 
 
 

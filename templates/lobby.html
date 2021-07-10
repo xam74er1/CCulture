@@ -33,12 +33,15 @@ bonjour je suis le lobby
 socket.on( 'Evt_party_new_player_as_join', function( evt ) {
   console.log( evt )
     var list = JSON.parse(evt)
+    list = JSON.parse(list)
+    console.log("list is ",list,list.length)
     //Si l'ellment n'est pas vide
   if( typeof evt !== 'undefined' ) {
       //On clear la list pour mieux la reaficher
       $("#listPlayer").empty();
       //On parcoure tout les nom des player qui son present dans la game
-    for (var name of list){
+    for (var i = 0;i<list.length;i++){
+        var name = list[i];
         //On ajoute a la liste le nom du player qui a rejoin
         $("#listPlayer").append("<li>"+name+"</li>")
     }

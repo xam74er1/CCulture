@@ -39,12 +39,12 @@ class Game:
         return Game.curentGame
 
     @staticmethod
-    def getPlayer():
+    def getPlayerStatic():
        game :Game = Game.curentGame
        return game.getPlayerFromUUID(session["uuid"])
 
     @staticmethod
-    def getParty():
+    def getPartyStatic():
         game: Game = Game.curentGame
         player : Player = game.getPlayerFromUUID(session["uuid"])
         return game.getParty(player.curent_party_id)
