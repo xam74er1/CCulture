@@ -1,13 +1,16 @@
 from src.Main.Model.Player import Player
+from src.Main.Model.Question import question
 import string
 import random # define the random module
 import json as jsonlib
 
 
 class Party():
-    def __init__(self):
+    def __init__(self,compteur,questionList):
         self.id : str = self.generateRandomUrl(10);
         self.playerList : [Player] = []
+        self.questionList :[question] =questionList
+        self.compteur: int= compteur
 
     def generateRandomUrl(self,size):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=size))
@@ -26,3 +29,9 @@ class Party():
     def sendEventToPlayer(self,eventName,json,socketio,messageReceived):
         for p in self.playerList:
          socketio.emit(eventName, jsonlib.dumps(json), callback=messageReceived,room=p.last_session_id)
+    
+    def compteurUp(self):
+        self.compteur=self.compteur+1
+    
+    def compteurDown(self):
+        self.compteur=self.compteur-1
