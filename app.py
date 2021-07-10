@@ -6,14 +6,15 @@ from src.Main.Controler.JoinControler import JoinControler
 from src.Main.Controler.LobbyControler import lobbyControler
 from src.Main.Model.Game import Game
 from src.Main.Model.Party import Party
-
 import json as jsonlib
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
 socketio = SocketIO(app)
 clients = []
 game = Game()
 t=Party(3,[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme3','Chirac').get_json()])
+
 @socketio.event
 def connect():
     print('connection established')
@@ -64,21 +65,29 @@ def QuestionTemplate():
 
 @socketio.on('question')
 def questionEvent(methods=['GET', 'POST']):
-    #listQ=[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json()]
-    #socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
-    #socketio.emit('my question',listQ[1], callback=messageReceived)
-    #socketio.emit('my question',question.question(1,'test').get_json(), callback=messageReceived)
     if t.compteur-1 < 0 :
         print('fin')
     else :
         socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
         t.compteurDown()
-    print(t.compteur)
-   
 
 @socketio.on('reponse')
 def reponseEvent(json, methods=['GET', 'POST']):
-    print(json)
+    #print(json)
+    Propa=jsonlib.loads(jsonlib.dumps(json))
+    print(Propa['reponse'])
 
+@app.route('/setting')
+def configureParty():
+    return render_template('configure.html')
+
+@socketio.on('setting')
+def reponseEvent(json, methods=['GET', 'POST']):
+    Propa=jsonlib.loads(jsonlib.dumps(json))
+    print(str(Propa))
+
+@socketio.on('TypeList')
+def TypeList():
+    socketio.emit('repTypeList',str(['test','tesr2']))
 if __name__ == '__main__':
     socketio.run(app, debug=True)
