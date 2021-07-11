@@ -1,20 +1,31 @@
+import time
+
 from flask import Flask, render_template, request, redirect
 from flask_socketio import SocketIO
-from src.Main.Model.Question import question,questionText
-from src.Main.Controler.Event.PartyNewPlayer import partyNewPlayerControler
+
+from src.Main.Controler.Event.QuestionControler import getQuestion
+from src.Main.Controler.Event.StartGmeControler import startGameContoroler
+from src.Main.Model.Question import question,QuestionText
+from src.Main.Controler.Event.PartyNewPlayerControler import partyNewPlayerControler
 from src.Main.Controler.JoinControler import JoinControler
 from src.Main.Controler.LobbyControler import lobbyControler
 from src.Main.Model.Game import Game
 from src.Main.Model.Party import Party
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
 
 import json as jsonlib
+
+from src.Main.Scheduler import nextQuestionParty
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
 socketio = SocketIO(app)
 clients = []
 game = Game()
-game.curentGame = game
-t=Party(3,[questionText.questionText('Qui Mange des Pomme','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme2','Chirac').get_json(),questionText.questionText('Qui Mange des Pomme3','Chirac').get_json()])
+Game.curentGame = game
+
+t=Party(3, [QuestionText.QuestionText('Qui Mange des Pomme', 'Chirac').get_json(), QuestionText.QuestionText('Qui Mange des Pomme2', 'Chirac').get_json(), QuestionText.QuestionText('Qui Mange des Pomme3', 'Chirac').get_json()])
 @socketio.event
 def connect():
     print('connection established')
@@ -65,11 +76,13 @@ def QuestionTemplate():
 
 @socketio.on('question')
 def questionEvent(methods=['GET', 'POST']):
-    if t.compteur-1 < 0 :
+    getQuestion(request,None,game,socketio,messageReceived)
+''' if t.compteur-1 < 0 :
         print('fin')
     else :
         socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
         t.compteurDown()
+'''
 
 @socketio.on('reponse')
 def reponseEvent(json, methods=['GET', 'POST']):
@@ -89,5 +102,22 @@ def reponseEvent(json, methods=['GET', 'POST']):
 @socketio.on('TypeList')
 def TypeList():
     socketio.emit('repTypeList',str(['test','tesr2']))
+
+
+#Action au start
+@socketio.on('startGame')
+def startGame(json):
+    startGameContoroler(request,json,game,socketio,messageReceived)
+
+#Cette fonction vas s'execute tout les seconde
+def goToNextQuestion():
+    nextQuestionParty(game,socketio)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=goToNextQuestion, trigger="interval", seconds=1)
+scheduler.start()
+
+atexit.register(lambda: scheduler.shutdown())
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)

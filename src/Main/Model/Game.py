@@ -10,12 +10,18 @@ class Game:
         self.id = 0;
         self.listParty : [Party] = []
         self.listPlayer : [Player] = [];
+        self.listRuningParty :[Party] = [] #Liste de toute les partie qui son en cour avec des question qui doive etre affiche les une apres les autre
 
     def addPlayer(self,player : Player):
         self.listPlayer.append(player)
 
     def addParty(self,party:Party):
         self.listParty.append(party)
+    def addPartyStart(self,party:Party):
+        self.listRuningParty.append(party)
+
+    def removeParty(self,party:Party):
+        self.listRuningParty.remove(party)
 
     def getParty(self,party_id : str):
         for p  in self.listParty:
@@ -46,5 +52,9 @@ class Game:
     @staticmethod
     def getPartyStatic():
         game: Game = Game.curentGame
+        print("Session uuid"+str(session))
         player : Player = game.getPlayerFromUUID(session["uuid"])
+        print("player party id "+str(player.curent_party_id)+"|")
         return game.getParty(player.curent_party_id)
+
+

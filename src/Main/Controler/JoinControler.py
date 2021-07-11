@@ -6,6 +6,7 @@ from src.Main.Model.Player import Player
 
 #Todo : Pense a rajoute la liste des player dans le controler
 #Todo : Pense dans le cas ou les champ game_id , sid ou pseude est null
+#Todo : refaire le systeme avec le form lors du join
 def JoinControler(request: Request,game : Game):
     print("Join")
     form = request.form
@@ -42,7 +43,7 @@ def JoinControler(request: Request,game : Game):
     if party != None:
 
         url = "/party/"+str(party.id);
-        player.last_session_id = party.id
+        player.curent_party_id= party.id
 
         Game.getGame()
 

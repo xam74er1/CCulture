@@ -11,14 +11,15 @@ bonjour je suis le lobby
 <div> Vous ete dans la parti {{ party_id }}</div>
 
 <div id="listPlayerDiv">
-<ul id="listPlayer">
+    <ul id="listPlayer">
 
 
-</ul>
+    </ul>
 </div>
-
+<input type="button" id="startButton" value="Start">
 <script>
 
+    //A refaire
     var partyId ="{{ party_id }}";
     var playerId = "{{ uuid }}";
 
@@ -30,24 +31,37 @@ bonjour je suis le lobby
     });
 
     //action realise losque nimpote quelle player rejoin la partie , cela perme de mettre a jour la liste
-socket.on( 'Evt_party_new_player_as_join', function( evt ) {
-  console.log( evt )
-    var list = JSON.parse(evt)
-    list = JSON.parse(list)
-    console.log("list is ",list,list.length)
-    //Si l'ellment n'est pas vide
-  if( typeof evt !== 'undefined' ) {
-      //On clear la list pour mieux la reaficher
-      $("#listPlayer").empty();
-      //On parcoure tout les nom des player qui son present dans la game
-    for (var i = 0;i<list.length;i++){
-        var name = list[i];
-        //On ajoute a la liste le nom du player qui a rejoin
-        $("#listPlayer").append("<li>"+name+"</li>")
-    }
-  }
-})
+    socket.on( 'Evt_party_new_player_as_join', function( evt ) {
+        console.log( evt )
+        var list = JSON.parse(evt)
+        list = JSON.parse(list)
+        console.log("list is ",list,list.length)
+        //Si l'ellment n'est pas vide
+        if( typeof evt !== 'undefined' ) {
+            //On clear la list pour mieux la reaficher
+            $("#listPlayer").empty();
+            //On parcoure tout les nom des player qui son present dans la game
+            for (var i = 0;i<list.length;i++){
+                var name = list[i];
+                //On ajoute a la liste le nom du player qui a rejoin
+                $("#listPlayer").append("<li>"+name+"</li>")
+            }
+        }
+    })
 
+    //action pour start la game :
+    $("#startButton").click(function(e) {
+        console.log("Start game")
+    socket.emit('startGame',{
+    action: "start"
+  })})
+
+    //Lorque une partie commence on remplace tout le html par le temple testQuestion.html
+    socket.on("partyStart",function( evt ) {
+           var html = JSON.parse(evt)
+        $("body").replaceWith(html);
+        }
+    )
 
 </script>
 </body>
