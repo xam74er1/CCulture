@@ -11,6 +11,7 @@ from src.Main.Controler.JoinControler import JoinControler
 from src.Main.Controler.LobbyControler import lobbyControler
 from src.Main.Model.Game import Game
 from src.Main.Model.Party import Party
+from src.Main.Model.Reponse import Reponse
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -86,9 +87,11 @@ def questionEvent(methods=['GET', 'POST']):
 
 @socketio.on('reponse')
 def reponseEvent(json, methods=['GET', 'POST']):
-    #print(json)
-    Propa=jsonlib.loads(jsonlib.dumps(json))
-    print(Propa['reponse'])
+    #Remplacer t.compteur par game.listParty.pop().compteur 
+    reponse=Reponse(t.compteur,Game.getPlayerStatic(),jsonlib.loads(jsonlib.dumps(json))['reponse'])
+    print(str(reponse.compteur)+' : '+reponse.user.name+' a répondu '+reponse.reponse)
+    
+ 
 
 @app.route('/setting')
 def configureParty():
