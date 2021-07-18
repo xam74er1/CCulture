@@ -10,4 +10,4 @@ def lobbyControler(request: Request,party_id):
         print("Aucun uuid dans la session")
     print("player uuid : "+str(uuid))
     print(session)
-    return render_template('lobby.html',party_id=party_id,uuid=uuid)
+    return render_template('lobby.html')

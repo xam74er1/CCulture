@@ -1,6 +1,7 @@
 import time
 
 from flask import Flask, render_template, request, redirect
+
 from flask_socketio import SocketIO
 
 from src.Main.Controler.Event.QuestionControler import getQuestion
@@ -20,12 +21,19 @@ from src.Main.Scheduler import nextQuestionParty
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
+
+
+
 socketio = SocketIO(app)
 clients = []
 game = Game()
 Game.curentGame = game
 
+
 t=Party(3, [QuestionText.QuestionText('Qui Mange des Pomme', 'Chirac').get_json(), QuestionText.QuestionText('Qui Mange des Pomme2', 'Chirac').get_json(), QuestionText.QuestionText('Qui Mange des Pomme3', 'Chirac').get_json()])
+
+
+
 @socketio.event
 def connect():
     print('connection established')
@@ -45,9 +53,10 @@ def party(party_id):
     return lobbyControler(request,party_id);
 
 #Lorsque une perssone rejoin une game
-@app.route('/joinGame',methods=["GET", "POST"])
-def join_game():
-    return JoinControler(request,game);
+#@app.route('/joinGame',methods=["GET", "POST"])
+@socketio.on('Evt_join_game')
+def join_game(json):
+    return JoinControler(request,json,game,socketio,messageReceived);
 
 #Event lorsque un joeur rejoin une partie deja existant
 @socketio.on('Evt_party_join')

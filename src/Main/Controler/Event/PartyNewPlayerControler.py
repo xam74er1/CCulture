@@ -8,16 +8,9 @@ from src.Main.Model.Player import Player
 
 
 def partyNewPlayerControler(request : Request ,json,game:Game,socketio,messageReceived):
-    partyid = json["partyId"]
-    playerId = json["playerId"]
-
-    print(session)
-    print("Party id " + str(partyid))
-    print("Un pbr avec l'ajout du player " + playerId)
-
     #Je recupre le player et la game corespondant
-    party : Party = game.getParty(partyid)
-    player : Player = game.getPlayerFromUUID(playerId)
+    party : Party = game.getPartyStatic()
+    player : Player = game.getPlayerStatic()
     if party != None and player != None:
         player.last_session_id = request.sid
 

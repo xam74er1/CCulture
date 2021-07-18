@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, request
 
 from src.Main.Model.Party import Party
 from src.Main.Model.Player import Player
@@ -29,7 +29,8 @@ class Game:
                 return p
         return None;
     def getPlayerFromUUID(self,uuid : str):
-        print("Player list size "+str(len(self.listPlayer)))
+        if len(self.listPlayer)>0:
+            print("Player list  "+str(self.listPlayer[0].uuid))
         for p in self.listPlayer:
             print(p.uuid)
             if str(p.uuid)==str(uuid):
@@ -47,14 +48,19 @@ class Game:
     @staticmethod
     def getPlayerStatic():
        game :Game = Game.curentGame
-       return game.getPlayerFromUUID(session["uuid"])
+       tmp : Player = game.getPlayerFromUUID(session["uuid"])
+       if tmp ==None:
+        tmp =game.getPlayerFromUUID(request.cookies["userID"])
+        session["uuid"] = tmp.uuid
+       return tmp
 
     @staticmethod
     def getPartyStatic():
         game: Game = Game.curentGame
-        print("Session uuid"+str(session))
-        player : Player = game.getPlayerFromUUID(session["uuid"])
-        print("player party id "+str(player.curent_party_id)+"|")
+        player : Player = game.getPlayerStatic()
+        if player == None:
+            print("Player not found")
+
         return game.getParty(player.curent_party_id)
 
 

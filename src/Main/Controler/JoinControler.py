@@ -1,4 +1,7 @@
-from flask import Request, redirect, session
+from flask import Request, redirect, session, flash
+import json as js
+
+
 
 from src.Main.Model.Game import Game
 from src.Main.Model.Party import Party
@@ -7,12 +10,16 @@ from src.Main.Model.Player import Player
 #Todo : Pense a rajoute la liste des player dans le controler
 #Todo : Pense dans le cas ou les champ game_id , sid ou pseude est null
 #Todo : refaire le systeme avec le form lors du join
-def JoinControler(request: Request,game : Game):
-    print("Join")
-    form = request.form
-    game_id = form["gameId"]
-    sid = form["sid"]
-    pseudo = form["pseudoId"]
+def JoinControler(request : Request ,json,game:Game,socketio,messageReceived):
+   # print("Join")
+
+   # form = request.form
+    if "gameId" in json :
+        game_id = json["gameId"]
+    else:
+        game_id = None
+    sid = request.sid
+    pseudo = json["pseudoId"]
 
     #Creation du player si il nexiste pas
     if 'uuid' in session:
@@ -34,12 +41,19 @@ def JoinControler(request: Request,game : Game):
         #session["object"] = player
 
 
-    if not game_id:
+    session["pseudo"] = player.name
+
+
+
+
+
+    if not game_id or game_id==None:
+
         party = Party();
         game.addParty(party)
     else :
         party = game.getParty(game_id)
-    print("Party"+str(party))
+
     if party != None:
 
         url = "/party/"+str(party.id);
@@ -47,7 +61,17 @@ def JoinControler(request: Request,game : Game):
 
         Game.getGame()
 
-        return redirect(url);
+        toReturn = {}
+        toReturn["url"] = url;
+        toReturn["playerID"] = player.uuid
+        socketio.emit("Evt_redirect_gameid", js.dumps(toReturn), room=sid, callback=messageReceived)
+
+        return url
+        #return redirect(url);
     print("Redirect to join")
 
     return redirect('/join');
+
+
+def ack():
+    print("msg receilve")

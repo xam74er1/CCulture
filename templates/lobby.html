@@ -19,15 +19,12 @@ bonjour je suis le lobby
 <input type="button" id="startButton" value="Start">
 <script>
 
-    //A refaire
-    var partyId ="{{ party_id }}";
-    var playerId = "{{ uuid }}";
+
 
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     //Lorsque que lon ce connecte on est pols donc on envois un msg que lon est co
     socket.emit( 'Evt_party_join', {
-        partyId : partyId,
-        playerId : playerId
+        message : "I'm joining",
     });
 
     //action realise losque nimpote quelle player rejoin la partie , cela perme de mettre a jour la liste
@@ -62,6 +59,8 @@ bonjour je suis le lobby
         $("body").replaceWith(html);
         }
     )
+
+
 
 </script>
 </body>
