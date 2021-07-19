@@ -1,0 +1,9 @@
+# Cache files
+__pycache__/
+__*__.py
+__*__
+__*__/
+
+# IDE / Editor
+.idea
+.vscode
