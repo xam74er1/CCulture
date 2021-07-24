@@ -1,4 +1,4 @@
-from flask import Request, session
+from flask import Request
 
 import json as jsonlib
 

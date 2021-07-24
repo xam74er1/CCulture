@@ -1,11 +1,11 @@
 import atexit
 import json as jsonlib
-import time
+from flask_socketio import SocketIO
+
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, redirect, render_template, request
+from flask import Flask, render_template, request
 from flask_cors import CORS
-from flask_socketio import SocketIO
 
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller

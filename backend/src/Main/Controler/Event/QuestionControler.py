@@ -1,5 +1,3 @@
-import json
-
 from flask import Request
 
 from backend.src.Main.Model.Game import Game

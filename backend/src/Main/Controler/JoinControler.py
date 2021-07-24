@@ -56,7 +56,7 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
         Game.get_game()
 
         to_return = {"url": url, "playerID": player.uuid}
-        socketio.emit("Evt_redirect_gameid", js.dumps(to_return), room=sid, callback=message_received)
+        socketio.emit("Evt_redirect_gameid", to_return, room=sid, callback=message_received)
 
         return url
         # return redirect(url);

@@ -1,3 +1,4 @@
+
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
@@ -6,7 +7,7 @@
           Rejoindre une partie
         </h2>
       </div>
-      <form class="mt-8 space-y-6" method="POST">
+      <form class="mt-8 space-y-6" >
         <input type="hidden" name="remember" value="true">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
@@ -45,7 +46,11 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
+
+import socket from "~/plugins/socket.io";
+import {dayInMs} from "~/components/uttils/Constante";
+import {createCookie} from "~/components/uttils/GenerateCookie";
 
 export default {
   name: 'Join',
@@ -57,11 +62,24 @@ export default {
     }
   },
   methods: {
+    // eslint-disable-next-line require-await
     async join () {
-      await this.$axios.$post('joinGame', { gameId: this.gameId, sid: this.sid, pseudoId: this.pseudoId })
+      console.log('Clique bouton rejoindre')
+      socket.emit('Evt_join_game', { gameId: this.gameId, sid: socket.io.engine.id, pseudoId: this.pseudoId })
+      // await this.$axios.$post('joinGame', { gameId: this.gameId, sid: this.sid, pseudoId: this.pseudoId })
     }
   }
 }
+
+socket.on('Evt_redirect_gameid', (evt) => {
+  console.log(evt)
+
+   sessionStorage['uuid'] = evt["playerID"];
+ createCookie("userID",evt["playerID"],100*dayInMs)
+  window.location.href = 'http://' + document.domain + ':' + location.port+evt["url"]
+
+})
+
 </script>
 
 <style scoped>
