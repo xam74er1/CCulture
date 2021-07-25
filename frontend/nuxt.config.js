@@ -39,12 +39,20 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-socket-io'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'http://localhost:5000' // Used as fallback if no runtime config is provided
+  },
+
+  io: {
+    sockets: [{
+      name: 'main',
+      url: 'http://localhost:5000'
+    }]
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

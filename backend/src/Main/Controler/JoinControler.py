@@ -11,7 +11,7 @@ from backend.src.Main.Model.Player import Player
 
 
 def join_controller(request: Request, json, game: Game, socketio, message_received):
-    # print("Join")
+    print("Evt_join_game")
 
     # form = request.form
     if "gameId" in json:
@@ -50,19 +50,14 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
         party = game.get_party(game_id)
 
     if party is not None:
-        url = "/party/" + str(party.id)
         player.current_party_id = party.id
 
         Game.get_game()
 
-        to_return = {"url": url, "playerID": player.uuid}
-        socketio.emit("Evt_redirect_gameid", to_return, room=sid, callback=message_received)
+        to_return = {"party_id": party.id, "player_id": player.uuid}
+        socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
 
-        return url
-        # return redirect(url);
-    print("Redirect to join")
-
-    return redirect('/join')
+        return
 
 
 def ack():

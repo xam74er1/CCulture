@@ -1,4 +1,3 @@
-
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
@@ -7,7 +6,7 @@
           Rejoindre une partie
         </h2>
       </div>
-      <form class="mt-8 space-y-6" >
+      <form class="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
@@ -46,39 +45,44 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 
-import socket from "~/plugins/socket.io";
-import {dayInMs} from "~/components/uttils/Constante";
-import {createCookie} from "~/components/uttils/GenerateCookie";
+import socket from '~/plugins/socket.io'
 
 export default {
   name: 'Join',
   data () {
     return {
-      gameId: null,
+      gameId: '',
       pseudoId: null,
-      sid: null
+      sid: null,
+      socket
     }
   },
+  mounted () {
+    this.socket = this.$nuxtSocket({ channel: '' })
+
+    this.socket.on('Evt_redirect_game_id', (evt) => {
+      console.log('Receive Evt_redirect_game_id')
+      console.log(evt)
+
+      // sessionStorage.uuid = evt.playerID
+      // createCookie('userID', evt.playerID, 100 * dayInMs)
+      // window.location.href = 'http://' + document.domain + ':' + location.port + evt.url
+    })
+  },
   methods: {
-    // eslint-disable-next-line require-await
-    async join () {
-      console.log('Clique bouton rejoindre')
-      socket.emit('Evt_join_game', { gameId: this.gameId, sid: socket.io.engine.id, pseudoId: this.pseudoId })
-      // await this.$axios.$post('joinGame', { gameId: this.gameId, sid: this.sid, pseudoId: this.pseudoId })
+    join () {
+      console.log('Send Evt_join_game')
+
+      this.socket.emit('Evt_join_game', {
+        gameId: null,
+        sid: this.socket.io.engine.id,
+        pseudoId: this.pseudoId
+      })
     }
   }
 }
-
-socket.on('Evt_redirect_gameid', (evt) => {
-  console.log(evt)
-
-   sessionStorage['uuid'] = evt["playerID"];
- createCookie("userID",evt["playerID"],100*dayInMs)
-  window.location.href = 'http://' + document.domain + ':' + location.port+evt["url"]
-
-})
 
 </script>
 
