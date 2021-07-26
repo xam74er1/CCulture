@@ -58,7 +58,9 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
         socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
 
         return
-
+    print("Cette party n'existe pas")
+    #SI on arrive ici cest que la partie n'existe pas
+    socketio.emit("Evt_error", "Cette party n'existe pas", room=sid, callback=message_received)
 
 def ack():
     print("msg receive")
