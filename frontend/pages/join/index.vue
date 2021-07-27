@@ -50,7 +50,9 @@
 </template>
 <script>
 
-import socket from '~/plugins/socket.io'
+import socket from '@/plugins/socket.io'
+import { createCookie } from '@/components/uttils/GenerateCookie'
+import { dayInMs } from '@/components/uttils/Constante'
 
 export default {
   name: 'Join',
@@ -64,11 +66,16 @@ export default {
     }
   },
   mounted () {
-    this.socket = this.$nuxtSocket({ channel: '' })
+    this.socket = this.$nuxtSocket({ name: 'main', persist: 'mainSocket' })
 
     this.socket.on('Evt_redirect_game_id', (evt) => {
       console.log('Receive Evt_redirect_game_id')
       console.log(evt)
+
+      if ('party_id' in evt && 'player_id' in evt) {
+        createCookie('userID', evt.player_id, 100 * dayInMs)
+        this.$router.push({ path: `party/${evt.party_id}` })
+      }
 
       // sessionStorage.uuid = evt.playerID
       // createCookie('userID', evt.playerID, 100 * dayInMs)

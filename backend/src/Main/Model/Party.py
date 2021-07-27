@@ -1,6 +1,5 @@
-import string
 import random  # define the random module
-import json as jsonlib
+import string
 
 from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
@@ -35,7 +34,7 @@ class Party():
             if message_received is None:
                 socketio.emit(event_name, json, room=p.last_session_id, callback=self.ack())
             else:
-                socketio.emit(event_name, jsonlib.dumps(json), callback=message_received, room=p.last_session_id)
+                socketio.emit(event_name, json, callback=message_received, room=p.last_session_id)
 
     def ack(self):
         print("msg receilve")

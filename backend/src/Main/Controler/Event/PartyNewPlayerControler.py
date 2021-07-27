@@ -1,7 +1,5 @@
 from flask import Request
 
-import json as jsonlib
-
 from backend.src.Main.Model.Game import Game
 from backend.src.Main.Model.Party import Party
 from backend.src.Main.Model.Player import Player
@@ -17,8 +15,8 @@ def party_new_player_controller(request: Request, json, game: Game, socketio, me
         # Je rajoute le player
         party.add_player(player)
         # On recupere la liste de tout les player pour les renvoyer
-        list_party = party.get_pseudo_player_list()
+        to_return = {"players": party.get_pseudo_player_list()}
 
-        party.send_event_to_player("Evt_party_new_player_as_join", jsonlib.dumps(list_party), socketio,
+        party.send_event_to_player("Evt_party_new_player_as_join", to_return, socketio,
                                    message_received)
-    # socketio.emit("Evt_party_new_player_as_join",jsonlib.dumps(listParty), callback=messageReceived)
+        # socketio.emit("Evt_party_new_player_as_join",jsonlib.dumps(listParty), callback=messageReceived)
