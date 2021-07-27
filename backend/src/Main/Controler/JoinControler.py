@@ -1,6 +1,4 @@
-import json as js
-
-from flask import Request, redirect, session
+from flask import Request, session
 
 # Todo : Pense a rajoute la liste des player dans le controler
 # Todo : Pense dans le cas ou les champ game_id , sid ou pseude est null
@@ -29,14 +27,14 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
         # Il ce peux que le uuid existe dans le session mais pas dans la game dans ce cas nous cree un nvx player
         if not player:
             player = Player(pseudo, sid)
-            session["uuid"] = player.uuid;
+            session["uuid"] = player.uuid
             game.add_player(player)
 
     else:
         print("PLayer not exist we ceate him")
         # Le player n'existe pas donc on le cree
         player = Player(pseudo, sid)
-        session["uuid"] = player.uuid;
+        session["uuid"] = player.uuid
         game.add_player(player)
         # session["object"] = player
 
@@ -58,9 +56,10 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
         socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
 
         return
-    print("Cette party n'existe pas")
-    #SI on arrive ici cest que la partie n'existe pas
-    socketio.emit("Evt_error", "Cette party n'existe pas", room=sid, callback=message_received)
+    print("Cette partie n'existe pas")
+    # SI on arrive ici cest que la partie n'existe pas
+    socketio.emit("Evt_error", "Cette partie n'existe pas", room=sid, callback=message_received)
+
 
 def ack():
     print("msg receive")
