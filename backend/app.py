@@ -9,7 +9,7 @@ from flask_socketio import SocketIO
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
 from backend.src.Main.Controler.Event.QuestionControler import get_question
-from backend.src.Main.Controler.Event.StartGmeControler import start_game_controller
+from backend.src.Main.Controler.Event.StartGameController import start_game_controller
 from backend.src.Main.Controler.JoinControler import join_controller
 from backend.src.Main.Controler.LobbyControler import lobby_controller
 from backend.src.Main.Model.Game import Game

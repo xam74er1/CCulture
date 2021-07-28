@@ -1,11 +1,8 @@
-import json
-
-
 class Question:
-    def __init__(self, id=0, categorie=""):
+    def __init__(self, id=0, category=""):
         self.id = id
-        self.categorie = categorie
+        self.category = category
         self.time = 5  # seconde par question
 
     def get_json(self):
-        return json.dumps(self.__dict__)
+        return self.__dict__

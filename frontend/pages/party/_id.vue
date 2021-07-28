@@ -39,6 +39,18 @@ export default {
         this.players = evt.players
       }
     })
+
+    this.socket.on('Evt_party_game_started', (evt) => {
+      console.log(evt)
+    })
+
+    this.socket.on('Evt_party_game_new_question', (evt) => {
+      console.log(evt)
+    })
+
+    this.socket.on('Evt_party_game_terminated', (evt) => {
+      console.log(evt)
+    })
   },
   methods: {
     startGame () {

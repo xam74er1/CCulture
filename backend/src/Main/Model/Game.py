@@ -8,7 +8,7 @@ class Game:
     currentGame = None
 
     def __init__(self):
-        self.id = 0;
+        self.id = 0
         self.listParty: [Party] = []
         self.listPlayer: [Player] = []
         self.listRunningParty: [

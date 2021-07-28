@@ -6,7 +6,7 @@ from backend.src.Main.Model.Question import question
 from backend.src.Main.Model.Question.QuestionText import QuestionText
 
 
-class Party():
+class Party:
     def __init__(self, counter=0, question_list=[]):
         self.id: str = self.generate_random_url(10)
         self.playerList: [Player] = []
