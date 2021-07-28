@@ -12,15 +12,19 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="player in players" :key="player">
+              <tr v-for="player in players" :key="player.id">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <!-- <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full" :src="player.image" alt="">
-                  </div> -->
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img
+                        class="h-10 w-10 rounded-full"
+                        src="https://gravatar.com/avatar/d30b419235b72217802f3180df5d6f48?s=200&d=robohash&r=x"
+                        alt=""
+                      >
+                    </div>
                     <div class="ml-4">
                       <div class="text-sm font-medium text-gray-900">
-                        {{ player }}
+                        {{ player.name }}
                       </div>
                     </div>
                   </div>
@@ -39,13 +43,8 @@ export default {
   name: 'PlayersList',
   props: {
     players: {
-      type: Array[String],
+      type: Array[Object],
       required: true
-    }
-  },
-  data () {
-    return {
-      // players: this.message
     }
   }
 }

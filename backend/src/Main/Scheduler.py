@@ -8,9 +8,9 @@ def next_question_party(game: Game, socketio):
         party: Party = p
 
         # Si il reste au moins une question a affiche
-        if party.compteur > 1:
+        if party.counter > 1:
 
-            question_current: Question = party.questionList[party.compteur - 1]
+            question_current: Question = party.questionList[party.counter - 1]
 
             if party.timeLeft > question_current.time:
                 send_next_question(socketio, party)
@@ -36,8 +36,8 @@ def next_question_party(game: Game, socketio):
 
 
 def send_next_question(socketio, party: Party):
-    party.compteur_down()
-    question_curent: Question = party.get_curent_question()
+    party.counter_down()
+    question_curent: Question = party.get_current_question()
     print("Send question" + question_curent.get_json())
 
     party.send_event_to_player("my question", question_curent.get_json(), socketio, None)

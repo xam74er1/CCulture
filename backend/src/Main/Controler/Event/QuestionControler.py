@@ -11,7 +11,7 @@ def get_question(request: Request, js, game: Game, socketio, message_received):
     player: Player = game.get_player_static()
     # Par sécurite on lui remet son SID
     player.last_session_id = request.sid
-    question: Question = party.get_curent_question()
+    question: Question = party.get_current_question()
     # On ne renvois la question que a celui qui la demande
     socketio.emit('my question', question.get_json(),
                   callback=message_received, room=player.last_session_id)

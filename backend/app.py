@@ -1,11 +1,10 @@
 import atexit
 import json as jsonlib
-from flask_socketio import SocketIO
-
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, request
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
@@ -127,7 +126,7 @@ def type_list():
 
 
 # Action au start
-@socketio.on('startGame')
+@socketio.on('Evt_party_start_game')
 def start_game(json):
     start_game_controller(request, json, game, socketio, messageReceived)
 
