@@ -1,5 +1,6 @@
 from backend.src.Main.Model.Game import Game
 from backend.src.Main.Model.Party import Party
+from backend.src.Main.Model.Question.Reponce import Reponce
 from backend.src.Main.Model.Question.question import Question
 
 
@@ -45,4 +46,7 @@ def terminate_party(game: Game, party: Party, socketio):
     print("Party terminated")
     game.remove_party(party)
     party.send_event_to_player("Evt_party_game_terminated", {"message": "Partie terminée"}, socketio, None)
-    print(party.get_all_reponece())
+    allRep = party.get_all_reponece()
+    for rep in allRep:
+        rep :Reponce = rep;
+        print(rep.reponce)

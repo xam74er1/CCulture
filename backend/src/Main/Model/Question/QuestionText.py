@@ -7,4 +7,4 @@ class QuestionText(Question):
         self.question = question
         self.response = response
         self.category = category
-        self.type = type(self);
+        self.type = str(type (self));

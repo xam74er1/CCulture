@@ -8,6 +8,14 @@
     </h3>
     <p v-if="question!=null && gameStatus === 'started'">
       {{ question }}
+      <!--Champ temporaire a inclure dans un modele -->
+       <input
+              id="reponce"
+              v-model="reponce"
+              type="text"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Reponce"
+            >
     </p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
       <div>
@@ -34,7 +42,8 @@ export default {
       id: this.$route.params.id,
       players: [],
       gameStatus: status.PENDING,
-      question: null
+      question: null,
+      reponce:null
     }
   },
   mounted () {
@@ -57,6 +66,9 @@ export default {
     this.socket.on('Evt_party_game_new_question', (evt) => {
       console.log(evt)
       this.question = evt
+      //Envois la reponce
+      this.socket.emit('Evt_party_game_reponce', this.reponce)
+      this.reponce = "";
     })
 
     this.socket.on('Evt_party_game_terminated', (evt) => {
