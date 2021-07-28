@@ -4,6 +4,7 @@ import string
 from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
 from backend.src.Main.Model.Question.QuestionText import QuestionText
+from backend.src.Main.Model.Question.Reponce import Reponce
 
 
 class Party:
@@ -14,6 +15,7 @@ class Party:
         self.counter: int = counter
         self.timeLeft = 0
         self.generate_question()
+        self.listReponce : [Reponce] = [];
 
     def generate_random_url(self, size):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=size))
@@ -63,3 +65,34 @@ class Party:
                              QuestionText('Qui Mange des Pomme2', 'Chirac'),
                              QuestionText('Qui Mange des Pomme3', 'Chirac')]
         self.counter = len(self.questionList)
+
+    def add_reponce(self,reponce : Reponce):
+        self.listReponce.append(reponce)
+
+    '''
+    postion = postion de la question voulus
+    player_position = pour un player donne sa position
+    
+    :param postion a -1 pour recupere toute les reponce
+    :param pplayer_postion a -1 pour n'importe quelle player
+       '''
+    def get_all_reponece(self,position =-1,player_position=-1):
+        #SI on ne lui met pas d'argument cest que lon veux toute les reponce
+        if(position == -1):
+            return self.listReponce
+
+        #Si on afiche les player un par un
+        if player_position !=-1:
+            curent_player : Player= self.playerList[player_position]
+
+        #Si non on affiche que ceux corepondant a la question
+        toReturn =[]
+        for rep  in self.listReponce:
+            rep : Reponce = rep
+            if rep.position == position:
+                #Si nous chersson un player en particulier et que ce player corepond
+                if player_position !=-1 and rep.player.name == curent_player.name:
+                    toReturn.append(rep)
+                else :
+                    toReturn.append(rep)
+        return rep

@@ -35,7 +35,7 @@
          $('#quest').remove()
         $('div.qu').append('<div id="quest">'+objet.question+'<input type="text" id="reponse"> <input type="submit" id="submit" /><div>')
         $('#submit').click(function(e) {
-            socket.emit('reponse',{
+            socket.emit('Evt_party_game_reponce',{
                 reponse: document.getElementById("reponse").value
             })})
 

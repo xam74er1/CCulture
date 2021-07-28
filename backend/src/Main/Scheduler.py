@@ -45,3 +45,4 @@ def terminate_party(game: Game, party: Party, socketio):
     print("Party terminated")
     game.remove_party(party)
     party.send_event_to_player("Evt_party_game_terminated", {"message": "Partie terminée"}, socketio, None)
+    print(party.get_all_reponece())

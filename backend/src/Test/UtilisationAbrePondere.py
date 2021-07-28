@@ -1,5 +1,5 @@
 from backend.src.Main.Model.Question.QuestionText import QuestionText
-from backend.src.Main.Model.Question.QuestionTree import *
+from backend.src.Main.Model.Question.QuestionTree.QuestionTree import *
 
 if __name__ == '__main__':
     #Objectife cree des arbre pondere

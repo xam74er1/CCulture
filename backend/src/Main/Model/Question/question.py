@@ -3,6 +3,7 @@ class Question:
         self.id = id
         self.category = category
         self.time = 5  # seconde par question
+        self.type = type (self);
 
     def get_json(self):
         return self.__dict__

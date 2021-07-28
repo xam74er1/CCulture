@@ -9,6 +9,7 @@ from flask_socketio import SocketIO
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
 from backend.src.Main.Controler.Event.QuestionControler import get_question
+from backend.src.Main.Controler.Event.ReponceControler import reponce_controler
 from backend.src.Main.Controler.Event.StartGameController import start_game_controller
 from backend.src.Main.Controler.JoinControler import join_controller
 from backend.src.Main.Controler.LobbyControler import lobby_controller
@@ -94,19 +95,11 @@ def question_event(methods=['GET', 'POST']):
     get_question(request, None, game, socketio, messageReceived)
 
 
-''' if t.compteur-1 < 0 :
-        print('fin')
-    else :
-        socketio.emit('my question',t.questionList[t.compteur-1], callback=messageReceived)
-        t.compteurDown()
-'''
 
 
-@socketio.on('reponse')
+@socketio.on('Evt_party_game_reponce')
 def reponse_event(json, methods=['GET', 'POST']):
-    # print(json)
-    Propa = jsonlib.loads(jsonlib.dumps(json))
-    print(Propa['reponse'])
+    reponce_controler(request, json, game, socketio, messageReceived)
 
 
 @app.route('/setting')

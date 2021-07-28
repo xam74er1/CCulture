@@ -4,12 +4,12 @@ import random
 
 from backend.src.Main.Model.Question.question import Question
 
-
 class QuestionTree:
     def __init__(self, name: str = "root", poids=1):
         self.name = name
         self.childs: [QuestionTree] = []
         self.poids = poids
+
 
     def add(self, child):
         self.childs.append(child)
