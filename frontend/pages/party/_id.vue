@@ -3,6 +3,12 @@
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
       Partie: #{{ id }}
     </h2>
+    <h3 class="mt-6 text-center text-1xl font-bold text-gray-900">
+      Game status: {{ gameStatus }}
+    </h3>
+    <p v-if="question!=null && gameStatus === 'started'">
+      {{ question }}
+    </p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
       <div>
         <PlayersList :players="players" />
@@ -21,11 +27,14 @@
 </template>
 
 <script>
+export const status = { PENDING: 'pending', STARTED: 'started', FINISHED: 'finished' }
 export default {
   data () {
     return {
       id: this.$route.params.id,
-      players: []
+      players: [],
+      gameStatus: status.PENDING,
+      question: null
     }
   },
   mounted () {
@@ -42,14 +51,17 @@ export default {
 
     this.socket.on('Evt_party_game_started', (evt) => {
       console.log(evt)
+      this.gameStatus = status.STARTED
     })
 
     this.socket.on('Evt_party_game_new_question', (evt) => {
       console.log(evt)
+      this.question = evt
     })
 
     this.socket.on('Evt_party_game_terminated', (evt) => {
       console.log(evt)
+      this.gameStatus = status.FINISHED
     })
   },
   methods: {
