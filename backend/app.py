@@ -9,7 +9,7 @@ from flask_socketio import SocketIO
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
 from backend.src.Main.Controler.Event.QuestionControler import get_question
-from backend.src.Main.Controler.Event.ReponceControler import reponce_controler
+from backend.src.Main.Controler.Event.ResponseController import response_controller
 from backend.src.Main.Controler.Event.StartGameController import start_game_controller
 from backend.src.Main.Controler.JoinControler import join_controller
 from backend.src.Main.Controler.LobbyControler import lobby_controller
@@ -90,16 +90,14 @@ def question_template():
     return render_template('testQuestion.html')
 
 
-@socketio.on('question')
-def question_event(methods=['GET', 'POST']):
-    get_question(request, None, game, socketio, messageReceived)
+@socketio.on('Evt_party_game_get_question')
+def question_event():
+    get_question(request, game, socketio, messageReceived)
 
 
-
-
-@socketio.on('Evt_party_game_reponce')
-def reponse_event(json, methods=['GET', 'POST']):
-    reponce_controler(request, json, game, socketio, messageReceived)
+@socketio.on('Evt_party_game_send_response')
+def send_response_event(json, methods=['GET', 'POST']):
+    response_controller(request, json, game, socketio, messageReceived)
 
 
 @app.route('/setting')
