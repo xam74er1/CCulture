@@ -3,6 +3,7 @@ import string
 
 from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
+from backend.src.Main.Model.Question.QuestionImage import QuestionImage
 from backend.src.Main.Model.Question.QuestionText import QuestionText
 from backend.src.Main.Model.Question.Response import Response
 
@@ -63,7 +64,9 @@ class Party:
     def generate_question(self):
         self.questionList = [QuestionText('Qui Mange des Pomme', 'Chirac'),
                              QuestionText('Qui Mange des Pomme2', 'Chirac'),
-                             QuestionText('Qui Mange des Pomme3', 'Chirac')]
+                             QuestionText('Qui Mange des Pomme3', 'Chirac'),
+                             QuestionImage("comment s'appele ce chat ?",response="chat kira",imagePath="backend/ressouces/images/Test/chatKira.jpg",isBase64=True,category="Test")
+                             ]
         self.counter = len(self.questionList)
 
     def add_reponce(self, reponce: Response):

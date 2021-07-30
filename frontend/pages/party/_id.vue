@@ -1,5 +1,6 @@
 <template>
   <div>
+    <error v-if="message!==null" :message="message" />
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
       Partie: #{{ id }}
     </h2>
@@ -57,13 +58,14 @@ export default {
       players: [],
       gameStatus: status.PENDING,
       question: null,
-      response: null
+      response: null,
+       message: null
     }
   },
   mounted () {
     this.socket = this.$nuxtSocket({ name: 'main', persist: 'mainSocket' })
 
-    this.socket.emit('Evt_party_join', { message: 'I\'m joining' })
+    this.socket.emit('Evt_party_join', this.id)
 
     this.socket.on('Evt_party_new_player_as_join', (evt) => {
       console.log(evt)
@@ -80,11 +82,18 @@ export default {
     this.socket.on('Evt_party_game_new_question', (evt) => {
       console.log(evt)
       this.question = evt
+      this.sendResponse ();
     })
 
     this.socket.on('Evt_party_game_terminated', (evt) => {
       console.log(evt)
+      this.sendResponse ();
       this.gameStatus = status.FINISHED
+    })
+
+    this.socket.on('Evt_error', (evt) => {
+      console.log('Evt_error')
+      this.message = evt.toString()
     })
   },
   methods: {

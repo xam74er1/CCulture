@@ -6,7 +6,7 @@ from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question.question import Question
 
 
-def get_question(request: Request, js, game: Game, socketio, message_received):
+def get_question(request: Request, json, game: Game, socketio, message_received):
     party: Party = game.get_party_static()
     player: Player = game.get_player_static()
     # Par sécurite on lui remet son SID

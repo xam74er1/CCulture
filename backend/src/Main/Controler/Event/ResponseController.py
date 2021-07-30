@@ -7,9 +7,11 @@ from backend.src.Main.Model.Question.Response import Response
 from backend.src.Main.Model.Question.question import Question
 
 
-def response_controller(request: Request, js, game: Game, socketio, message_received):
-    party: Party = game.get_party_static()
-    player: Player = game.get_player_static()
-    question: Question = party.get_current_question()
-    response = Response(js, player, question, party.counter)
-    party.add_reponce(response)
+def response_controller(request: Request, json, game: Game, socketio, message_received):
+    if json != None :
+        party: Party = game.get_party_static()
+        player: Player = game.get_player_static()
+        print("Reponce recus : "+str(json))
+        question: Question = party.get_current_question()
+        response = Response(json, player, question, party.counter)
+        party.add_reponce(response)

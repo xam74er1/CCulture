@@ -33,10 +33,10 @@ class Game:
         return None
 
     def get_player_from_uuid(self, uuid: str):
-        if len(self.listPlayer) > 0:
-            print("Player list  " + str(self.listPlayer[0].uuid))
+        #if len(self.listPlayer) > 0:
+            #print("Player list  " + str(self.listPlayer[0].uuid))
         for p in self.listPlayer:
-            print(p.uuid)
+            #print(p.uuid)
             if str(p.uuid) == str(uuid):
                 return p
         return None
@@ -52,7 +52,9 @@ class Game:
     @staticmethod
     def get_player_static():
         game: Game = Game.currentGame
-        tmp: Player = game.get_player_from_uuid(session["uuid"])
+        tmp = None;
+        if session.get("uuid") :
+            tmp: Player = game.get_player_from_uuid(session["uuid"])
         if tmp is None:
             tmp = game.get_player_from_uuid(request.cookies["userID"])
             session["uuid"] = tmp.uuid
