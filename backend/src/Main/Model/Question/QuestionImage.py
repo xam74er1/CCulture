@@ -11,6 +11,7 @@ class QuestionImage(QuestionText):
         self.isBase64 = isBase64;
         self.url = url;
         self.toBase64(imagePath);
+        self.extention = imagePath.split(".")[-1]
 
     '''
     Image mise en base 64 pour evite que lon ne regarde l'url ou dans le dossier , car souvent les image porte le nom ce qui peux donne une reponce
@@ -18,3 +19,4 @@ class QuestionImage(QuestionText):
     def toBase64(self,imagePath):
         with open(imagePath, "rb") as image_file:
             self.image = base64.b64encode(image_file.read())
+        print(self.image)

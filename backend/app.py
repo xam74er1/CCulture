@@ -6,6 +6,7 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
 
+from backend.src.Main.Controler.Event.DisplayAnswerControler import displays_curent_answer
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
 from backend.src.Main.Controler.Event.QuestionControler import get_question
@@ -17,6 +18,7 @@ from backend.src.Main.Model.Game import Game
 from backend.src.Main.Model.Party import Party
 from backend.src.Main.Model.Question import QuestionText
 from backend.src.Main.Scheduler import next_question_party
+from backend.src.Test.Controler.AutoFillPartyWithAnswer import auto_fill_party_wth_answer
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tmpKey'
@@ -121,10 +123,16 @@ def type_list():
 def start_game(json):
     start_game_controller(request, json, game, socketio, messageReceived)
 
+@socketio.on('Evt_party_get_curent_answer')
+def get_curent_answer(json):
+    displays_curent_answer(request, json, game, socketio, messageReceived)
+
+#Fonction de test qui n'a pas vocaction a reste
+@socketio.on('Evt_Test_fill_asnwer')
+def get_curent_answer(json):
+    auto_fill_party_wth_answer(request, json, game, socketio, messageReceived)
 
 # Cette fonction vas s'execute tout les seconde
-
-
 def go_to_next_question():
     next_question_party(game, socketio)
 

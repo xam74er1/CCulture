@@ -14,6 +14,7 @@ class Party:
         self.playerList: [Player] = []
         self.questionList: [question] = question_list
         self.counter: int = counter
+        self.answer_counter : int =0;
         self.timeLeft = 0
         self.generate_question()
         self.listReponce: [Response] = [];
@@ -68,6 +69,7 @@ class Party:
                              QuestionImage("comment s'appele ce chat ?",response="chat kira",imagePath="backend/ressouces/images/Test/chatKira.jpg",isBase64=True,category="Test")
                              ]
         self.counter = len(self.questionList)
+        self.answer_counter =len(self.questionList)
 
     def add_reponce(self, reponce: Response):
         self.listReponce.append(reponce)
@@ -99,4 +101,10 @@ class Party:
                     toReturn.append(rep)
                 else:
                     toReturn.append(rep)
-        return rep
+        return toReturn
+
+    '''
+    Retourne tout les uttilise pour une question donne
+    '''
+    def get_curent_question_with_all_player(self):
+        return self.get_all_reponece(self.answer_counter-1)
