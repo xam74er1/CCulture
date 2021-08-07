@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="isQuestionImage">
-      <img :src="imagePath" >
+    <div v-if="this.isQuestionImage" v-model="this.isQuestionImage">
+      <img :src="this.imagePath" >
 
     </div>
-    <p>{{ question_text }}</p>
+    <p v-model="this.question_text">{{ this.question_text }}</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
       <div v-if="reponce_corecte==null">
         <div class="mt-1 relative rounded-md shadow-sm">

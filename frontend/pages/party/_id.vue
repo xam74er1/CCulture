@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="gameStatus === 'answer'">
-    <AnswerList :question="this.question" :all-reponce="this.allReponce"></AnswerList>
+      <AnswerList :question="this.question" :all-reponce="this.allReponce" :socket="this.socket" :dispaly-valider="this.dispalyValider"></AnswerList>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
@@ -41,7 +41,7 @@
         </div>
 
 
-            <div class="mt-1">
+        <div class="mt-1">
           <a
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             @click="testEnvoisAutoCaseCocher"
@@ -71,7 +71,9 @@ export default {
       question: null,
       response: null,
       message: null,
-      allReponce : null
+      allReponce : null,
+      socket : null,
+      dispalyValider : true
     }
   },
   mounted () {
@@ -114,6 +116,7 @@ export default {
 
       this.question = evt.question;
       this.allReponce = evt.allReponce;
+      this.dispalyValider = true;
       console.log(evt)
     })
 
@@ -128,7 +131,7 @@ export default {
       this.response = null
     },
     getNextAnswer(){
-       this.socket.emit('Evt_party_get_curent_answer', "")
+      this.socket.emit('Evt_party_get_curent_answer', "")
 
     },
 

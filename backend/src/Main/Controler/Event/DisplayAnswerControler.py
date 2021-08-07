@@ -26,6 +26,7 @@ def displays_curent_answer(request: Request, json, game: Game, socketio, message
         ellem = {
             "name" :  rep.player.name,
             "answer" : rep.response,
+            "id" : rep.id,
             "valid" : True
         }
 

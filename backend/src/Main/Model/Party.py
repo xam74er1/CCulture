@@ -18,6 +18,7 @@ class Party:
         self.timeLeft = 0
         self.generate_question()
         self.listReponce: [Response] = [];
+        self.nb_player_send_validation = 0;
 
     def generate_random_url(self, size):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=size))
@@ -108,3 +109,28 @@ class Party:
     '''
     def get_curent_question_with_all_player(self):
         return self.get_all_reponece(self.answer_counter-1)
+
+    '''
+    Met a jour la reponce pour dire si elle est corecte ou non 
+    
+    L'auto evalation est autorise
+    '''
+    def set_valid_aswer(self,json):
+
+        id = json["id"];
+        valid = json["valid"]
+        for rep in self.listReponce:
+            if rep.id == id :
+
+                if valid :
+                    rep.isCorect()
+                else:
+                    rep.isIncorect()
+            break;
+
+    def increase_validation_count(self):
+        self.nb_player_send_validation +=1;
+
+    def next_aswer(self):
+        self.answer_counter -=1;
+
