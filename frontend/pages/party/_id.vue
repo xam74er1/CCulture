@@ -8,11 +8,15 @@
       Game status: {{ gameStatus }}
     </h3>
     <div v-if="question!=null && gameStatus === 'started'" class="p-1.5">
-      <Question :question="this.question" :reponce="this.response"></Question>
+      <Question :question="question" :response="response" />
     </div>
 
     <div v-if="gameStatus === 'answer'">
-      <AnswerList :question="this.question" :all-reponce="this.allReponce" :socket="this.socket" :dispaly-valider="this.dispalyValider"></AnswerList>
+      <AnswerList
+        :question="question"
+        :all-response="allResponse"
+        :display-validation="displayValidation"
+      />
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
@@ -40,7 +44,6 @@
           </a>
         </div>
 
-
         <div class="mt-1">
           <a
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -50,19 +53,18 @@
             Pour teste : Enovis auto des case cocher
           </a>
         </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Question from "../../components/Question";
-import AnswerList from "../../components/AnswerList";
-export const status = { PENDING: 'pending', STARTED: 'started', FINISHED: 'finished',ANSWER :'answer' }
+import Question from '../../components/Question'
+import AnswerList from '../../components/AnswerList'
+
+export const status = { PENDING: 'pending', STARTED: 'started', FINISHED: 'finished', ANSWER: 'answer' }
 export default {
-  components: {AnswerList, Question},
+  components: { AnswerList, Question },
   data () {
     return {
       id: this.$route.params.id,
@@ -71,9 +73,9 @@ export default {
       question: null,
       response: null,
       message: null,
-      allReponce : null,
-      socket : null,
-      dispalyValider : true
+      allResponse: null,
+      socket: null,
+      displayValidation: true
     }
   },
   mounted () {
@@ -96,12 +98,12 @@ export default {
     this.socket.on('Evt_party_game_new_question', (evt) => {
       console.log(evt)
       this.question = evt
-      this.sendResponse ();
+      this.sendResponse()
     })
 
     this.socket.on('Evt_party_game_terminated', (evt) => {
       console.log(evt)
-      this.sendResponse ();
+      this.sendResponse()
       this.gameStatus = status.FINISHED
     })
 
@@ -110,16 +112,17 @@ export default {
       this.message = evt.toString()
     })
 
-    this.socket.on('Evt_party_send_new_aswers', (evt) => {
+    this.socket.on('Evt_party_send_new_answers', (evt) => {
       console.log('Evt_new_answer')
-      this.gameStatus = status.ANSWER
-
-      this.question = evt.question;
-      this.allReponce = evt.allReponce;
-      this.dispalyValider = true;
       console.log(evt)
-    })
 
+      this.gameStatus = status.ANSWER
+      if ('question' in evt && 'allResponse' in evt) {
+        this.question = evt.question
+        this.allResponse = evt.allResponse
+      }
+      this.displayValidation = true
+    })
   },
   methods: {
     startGame () {
@@ -130,17 +133,16 @@ export default {
       this.socket.emit('Evt_party_game_send_response', this.response)
       this.response = null
     },
-    getNextAnswer(){
-      this.socket.emit('Evt_party_get_curent_answer', "")
-
+    getNextAnswer () {
+      this.socket.emit('Evt_party_get_current_answer', '')
     },
 
-    testFillAuto(){
-      console.log("Demende de remplissage auto")
-      this.socket.emit('Evt_Test_fill_asnwer', "")
+    testFillAuto () {
+      console.log('Demende de remplissage auto')
+      this.socket.emit('Evt_Test_fill_answer', '')
     },
-    testEnvoisAutoCaseCocher(){
-      console.log(this.allReponce)
+    testEnvoisAutoCaseCocher () {
+      console.log(this.allResponse)
     }
 
   }

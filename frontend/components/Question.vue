@@ -1,21 +1,19 @@
 <template>
   <div>
-    <div v-if="this.isQuestionImage" v-model="this.isQuestionImage">
-      <img :src="this.imagePath" >
-
+    <div v-if="isQuestionImage">
+      <img :src="imagePath" alt="">
     </div>
-    <p v-model="this.question_text">{{ this.question_text }}</p>
+    <p>{{ question_text }}</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
-      <div v-if="reponce_corecte==null">
+      <div v-if="correctResponse==null">
         <div class="mt-1 relative rounded-md shadow-sm">
           <input
-            v-model="this.reponce"
+            v-model="response"
             type="text"
             name="response"
             placeholder="Entrez la réponse"
             class="focus:ring-indigo-500 focus:border-indigo-500 block w-full w-full px-3 py-2 pl-7 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
             pattern=""
-
           >
         </div>
 
@@ -33,7 +31,7 @@
       </div>
 
       <div v-else>
-        <p>Reponce attendu : {{ this.reponce_corecte  }}</p>
+        <p>Reponce attendu : {{ correctResponse }}</p>
       </div>
     </div>
   </div>
@@ -47,21 +45,17 @@ export default {
       type: Object,
       required: true
     },
-    reponce: {
-      type: String,
-      required: false
-    },
-    reponce_corecte: {
+    correctResponse: {
       type: String,
       required: false
     }
   },
   data () {
     return {
+      response: null,
       question_text: this.question.question,
-      isQuestionImage : !!this.question.extention,
-      imagePath : this.question.isBase64 ? "data:image/"+this.question.extention+";base64,"+new TextDecoder("utf-8").decode(this.question.image) : ""
-
+      isQuestionImage: !!this.question.extention,
+      imagePath: this.question.isBase64 ? 'data:image/' + this.question.extention + ';base64,' + new TextDecoder('utf-8').decode(this.question.image) : ''
     }
   }
 }
