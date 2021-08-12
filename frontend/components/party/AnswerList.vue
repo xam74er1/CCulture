@@ -7,7 +7,7 @@
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <Question :question="question" correct-response="question.response" />
+                  <Question correct-response="question.response" />
                 </th>
               </tr>
             </thead>
@@ -74,10 +74,6 @@ export default {
   name: 'AnswerList',
   components: { Question },
   props: {
-    question: {
-      type: Object,
-      required: true
-    },
     allResponse: {
       type: Array[Object],
       required: true
@@ -97,7 +93,6 @@ export default {
   mounted () {
     this.socket = this.$nuxtSocket({ name: 'main', persist: 'mainSocket' })
 
-    console.log('Monted')
     this.props.displayValidation = true
   },
 
