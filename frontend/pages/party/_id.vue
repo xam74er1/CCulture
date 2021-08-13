@@ -8,7 +8,6 @@
     <AnswerList
       v-if="gameStatus === 'answer'"
       :all-response="allResponse"
-      :display-validation="displayValidation"
     />
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
@@ -18,7 +17,7 @@
 
         <!--Provistoire pour teste -->
 
-        <div class="mt-1">
+        <div v-if="gameStatus === 'started'" class="mt-1">
           <a
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             @click="testFillAuto"
@@ -56,8 +55,7 @@ export default {
     return {
       id: this.$route.params.id,
       allResponse: null,
-      socket: null,
-      displayValidation: true
+      socket: null
     }
   },
   computed: {
@@ -102,6 +100,7 @@ export default {
       this.sendResponse()
       this.$store.commit('party/setGameStatus', status.FINISHED)
       this.$store.commit('party/setCurrentQuestion', null)
+      this.socket.emit('Evt_party_get_current_answer', {})
     })
 
     this.socket.on('Evt_error', (evt) => {
@@ -119,7 +118,6 @@ export default {
         this.$store.commit('party/setCurrentQuestion', evt.question)
         this.allResponse = evt.allResponse
       }
-      this.displayValidation = true
     })
   },
   methods: {

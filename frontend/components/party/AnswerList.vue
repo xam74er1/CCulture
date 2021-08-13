@@ -41,27 +41,15 @@
             </tbody>
           </table>
         </div>
-        <div v-if="displayValidation">
-          <div class="mt-1">
-            <a
-              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              @click="validAnswer"
-            >
-              <span class="absolute left-0 inset-y-0 flex items-center pl-3" />
-              Valider
-            </a>
-          </div>
+        <div class="mt-1">
+          <a
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            @click="validAnswer"
+          >
+            <span class="absolute left-0 inset-y-0 flex items-center pl-3" />
+            Valider
+          </a>
         </div>
-      </div>
-
-      <div class="mt-1">
-        <a
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          @click="validAnswer"
-        >
-          <span class="absolute left-0 inset-y-0 flex items-center pl-3" />
-          Debug valider : cliuer plutire fois pour valider la meme reponce
-        </a>
       </div>
     </div>
   </div>
@@ -77,12 +65,6 @@ export default {
     allResponse: {
       type: Array[Object],
       required: true
-    },
-    displayValidation: {
-      type: Boolean,
-      default () {
-        return true
-      }
     }
   },
   data () {
@@ -92,14 +74,11 @@ export default {
   },
   mounted () {
     this.socket = this.$nuxtSocket({ name: 'main', persist: 'mainSocket' })
-
-    this.props.displayValidation = true
   },
 
   methods: {
     validAnswer () {
       this.socket.emit('Evt_party_set_valid_answers', this.allResponse)
-      this.props.displayValidation = false
     }
   }
 }

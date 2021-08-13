@@ -11,6 +11,7 @@ from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
 from backend.src.Main.Controler.Event.QuestionControler import get_question
 from backend.src.Main.Controler.Event.ResponseController import response_controller
+from backend.src.Main.Controler.Event.SetCorectAswerControler import set_valid_answer
 from backend.src.Main.Controler.Event.StartGameController import start_game_controller
 from backend.src.Main.Controler.JoinControler import join_controller
 from backend.src.Main.Controler.LobbyControler import lobby_controller
@@ -122,6 +123,12 @@ def type_list():
 @socketio.on('Evt_party_start_game')
 def start_game(json):
     start_game_controller(request, json, game, socketio, messageReceived)
+
+
+# Lorsque le joeure a evaluer toute ses reponce il renvois
+@socketio.on('Evt_party_set_valid_answers')
+def get_current_answer(json):
+    set_valid_answer(request, json, game, socketio, messageReceived)
 
 
 @socketio.on('Evt_party_get_current_answer')

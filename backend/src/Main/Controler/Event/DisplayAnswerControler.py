@@ -28,7 +28,8 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
         ellem = {
             "name": rep.player.name,
             "answer": rep.response,
-            "valid": True
+            "valid": True,
+            "id": rep.id
         }
 
         list.append(ellem)
