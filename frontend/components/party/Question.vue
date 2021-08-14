@@ -4,7 +4,7 @@
       <img :src="imagePath" alt="">
     </div>
     <p>{{ questionName }}</p>
-    <ResponseInput class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1" />
+    <ResponseInput />
   </div>
 </template>
 
@@ -39,7 +39,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

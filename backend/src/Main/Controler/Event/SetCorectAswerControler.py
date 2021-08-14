@@ -32,6 +32,6 @@ def set_valid_answer(request: Request, json, game: Game, socketio, message_recei
             # Si non on affiche les resulta
             print("Displays result")
             for aw in party.listReponce:
-                rep: Response = aw;
+                rep: Response = aw
                 print(str(rep.response) + " :  +" + str(rep.corect) + " " + str(rep.incorect))
-
+            party.send_event_to_player("Evt_party_final_results", {'result': None}, socketio, None)

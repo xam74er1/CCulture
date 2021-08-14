@@ -3,7 +3,6 @@
     <input
       v-model="response"
       type="text"
-      name="response"
       placeholder="Entrez la réponse"
       class="focus:ring-indigo-500 focus:border-indigo-500 block w-full w-full px-3 py-2 pl-7 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
     >

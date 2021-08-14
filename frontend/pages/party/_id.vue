@@ -3,14 +3,11 @@
     <error v-if="error!==null" :message="error" />
     <Title :game-status="gameStatus" :party-id="id" />
 
-    <Question v-if="currentQuestion!==null && gameStatus === 'started'" class="p-1.5" />
-
-    <AnswerList
-      v-if="gameStatus === 'answer'"
-      :all-response="allResponse"
-    />
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1.5">
+      <div class="md:col-span-2 p-1.5">
+        <Question v-if="currentQuestion!==null && gameStatus === 'started'" />
+        <AnswerList v-if="gameStatus === 'answer'" :all-response="allResponse" />
+      </div>
       <div>
         <PlayersList :players="players" />
         <StartGameButton />
@@ -101,6 +98,12 @@ export default {
       this.$store.commit('party/setGameStatus', status.FINISHED)
       this.$store.commit('party/setCurrentQuestion', null)
       this.socket.emit('Evt_party_get_current_answer', {})
+    })
+
+    this.socket.on('Evt_party_final_results', (evt) => {
+      console.log('Evt_party_final_results')
+      console.log(evt)
+      this.$store.commit('party/setGameStatus', status.RESULTS)
     })
 
     this.socket.on('Evt_error', (evt) => {

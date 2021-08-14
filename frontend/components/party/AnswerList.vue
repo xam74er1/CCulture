@@ -7,7 +7,7 @@
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <Question correct-response="question.response" />
+                  <p>{{ questionName }}</p>
                 </th>
               </tr>
             </thead>
@@ -56,11 +56,9 @@
 </template>
 
 <script>
-import Question from './Question'
 
 export default {
   name: 'AnswerList',
-  components: { Question },
   props: {
     allResponse: {
       type: Array[Object],
@@ -70,6 +68,15 @@ export default {
   data () {
     return {
       socket: null
+    }
+  },
+  computed: {
+    questionName () {
+      const currentQuestion = this.$store.state.party.currentQuestion
+      if (currentQuestion !== null && 'question' in currentQuestion) {
+        return currentQuestion.question
+      }
+      return ''
     }
   },
   mounted () {
