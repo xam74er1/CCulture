@@ -9,6 +9,9 @@ class QuestionLeaves(QuestionTree):
         super().__init__(name, poids)
         self.question_list = question_list
 
+    def get_question(self):
+        self.getRandomQuestion(self.question_list)
+
     def getRandomQuestion(question_list: [Question]):
         return random.choice(question_list)
         

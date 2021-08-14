@@ -6,6 +6,7 @@ from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
 from backend.src.Main.Model.Question.QuestionImage import QuestionImage
 from backend.src.Main.Model.Question.QuestionText import QuestionText
+from backend.src.Main.Model.Question.QuestionTree.QuestionLeaveCountryFlag import QuestionLeaveCountryFlag
 from backend.src.Main.Model.Question.Response import Response
 
 
@@ -71,10 +72,11 @@ class Party:
         return self.questionList[self.counter%len(self.questionList)]
 
     def generate_question(self):
+        contry_flag = QuestionLeaveCountryFlag()
         self.questionList = [QuestionText('Qui Mange des Pomme', 'Chirac'),
                              QuestionText('Qui Mange des Pomme2', 'Chirac'),
                              QuestionText('Qui Mange des Pomme3', 'Chirac'),
-                             QuestionImage("comment s'appele ce chat ?",response="chat kira",imagePath="backend/ressouces/images/Test/chatKira.jpg",isBase64=True,category="Test")
+                             contry_flag.get_question()
                              ]
         self.counter = len(self.questionList)
         self.answer_counter =len(self.questionList)

@@ -2,7 +2,7 @@
 # Ex si je veux avoir plus de question de type geographie que d'histoire je pourais mettre un poids de larbre diffeent
 import random
 
-from backend.src.Main.Model.Question.QuestionTree.QuestionLeaves import QuestionLeaves
+import backend
 from backend.src.Main.Model.Question.question import Question
 
 class QuestionTree:
@@ -24,13 +24,15 @@ class QuestionTree:
     def getRandomQuestion(self):
 
         child = self.__getRandomChild__()
-        while type(child) != QuestionLeaves:
+        while type(child) != backend.src.Main.Model.Question.QuestionTree.QuestionLeaves.QuestionLeaves:
             child = child.__getRandomChild__()
 
-        feuille: QuestionLeaves = child
+        feuille = child
         # On retoune une question quelquon de la liste
-        return random.choice(feuille.question_list)
+        return feuille.get_question()
 
+    def get_question(self):
+        return self.getRandomQuestion()
     '''
     Algo pour tire au sort des ellement dans une liste pondere
     
