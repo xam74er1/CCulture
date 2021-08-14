@@ -19,6 +19,10 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
     map: Dict = {}
 
     print(all_player_answer)
+    #Si ya un bug et que aucune donne n'est retoune
+    if len(all_player_answer) <1 :
+        print("Un pbr est survenus : "+str(party.answer_counter))
+        return
     map["question"] = all_player_answer[0].question.get_json()
 
     list = []
@@ -28,7 +32,7 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
         ellem = {
             "name": rep.player.name,
             "answer": rep.response,
-            "valid": True,
+            "valid": (len(rep.response) >0 ),
             "id": rep.id,
             "position": rep.position
         }

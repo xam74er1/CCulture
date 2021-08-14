@@ -24,6 +24,6 @@ class Response:
         self.incorect +=1;
 
     def is_valid_aswer(self):
-        if self.incorect>self.corect:
+        if self.incorect>self.corect or (self.incorect==0 and self.corect ==0):
             return False
         return True

@@ -115,6 +115,15 @@ class Party:
         return toReturn
 
     '''
+    Retorune toute les reponse pour un joeure donne
+    '''
+    def get_all_reponce_for_player(self,player:Player):
+        toReturn = []
+        for rep in self.listReponce:
+            if rep.player.name == player.name:
+                toReturn.append(rep)
+        return  toReturn
+    '''
     Retourne tout les uttilise pour une question donne
     '''
     def get_curent_question_with_all_player(self):

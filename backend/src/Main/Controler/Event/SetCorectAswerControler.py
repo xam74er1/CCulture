@@ -34,4 +34,31 @@ def set_valid_answer(request: Request, json, game: Game, socketio, message_recei
             for aw in party.listReponce:
                 rep: Response = aw
                 print(str(rep.response) + " :  +" + str(rep.corect) + " " + str(rep.incorect))
-            party.send_event_to_player("Evt_party_final_results", {'result': None}, socketio, None)
+
+            res = get_player_score(party);
+            print(res)
+            party.send_event_to_player("Evt_party_final_results", {'result': res}, socketio, None)
+
+
+def get_player_score(party : Party):
+    result = []
+    for player  in party.playerList:
+        print("Pour le joeure"+player.name)
+        all_reponce = party.get_all_reponce_for_player(player)
+        conteur = 0
+        for rep  in all_reponce:
+            if rep.is_valid_aswer():
+               conteur += 1
+               print("Nombre de point : "+str(conteur)+"  "+str(rep.is_valid_aswer()))
+        result.append({
+            "name" : player.name,
+            "points" : conteur
+        })
+
+    print("Avant "+str(result))
+    result = sorted(result, key=lambda k: k['points'],reverse=True)
+    postion = 1;
+    for tmp in result:
+        tmp["rank"] = postion
+        postion+=1
+    return {"result":result}
