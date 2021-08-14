@@ -44,6 +44,8 @@ def send_next_question(socketio, party: Party):
 
 def terminate_party(game: Game, party: Party, socketio):
     print("Party terminated")
+    party.counter =0
+    #Retire la partie de la liste des partie qui tourne en boucle (ne la detruie pas)
     game.remove_party(party)
     party.send_event_to_player("Evt_party_game_terminated", {"message": "Partie terminée"}, socketio, None)
     allRep = party.get_all_reponece()

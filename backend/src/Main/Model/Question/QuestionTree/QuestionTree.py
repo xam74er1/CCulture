@@ -2,6 +2,7 @@
 # Ex si je veux avoir plus de question de type geographie que d'histoire je pourais mettre un poids de larbre diffeent
 import random
 
+from backend.src.Main.Model.Question.QuestionTree.QuestionLeaves import QuestionLeaves
 from backend.src.Main.Model.Question.question import Question
 
 class QuestionTree:
@@ -79,7 +80,4 @@ class QuestionTree:
         return None
 
 
-class QuestionLeaves(QuestionTree):
-    def __init__(self, question_list: [Question], name: str = "root", poids=1):
-        super().__init__(name, poids)
-        self.question_list = question_list
+

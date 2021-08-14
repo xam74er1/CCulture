@@ -3,6 +3,7 @@ from flask import Request
 from backend.src.Main.Controler.Event.DisplayAnswerControler import displays_current_answer
 from backend.src.Main.Model.Game import Game
 from backend.src.Main.Model.Party import Party
+from backend.src.Main.Model.Question import Response
 
 '''
 Controleur permtant d'affecte lrosque les joeure dise si une reponce est valide ou non
@@ -30,3 +31,7 @@ def set_valid_answer(request: Request, json, game: Game, socketio, message_recei
         else:
             # Si non on affiche les resulta
             print("Displays result")
+            for aw in party.listReponce:
+                rep: Response = aw;
+                print(str(rep.response) + " :  +" + str(rep.corect) + " " + str(rep.incorect))
+

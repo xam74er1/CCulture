@@ -130,7 +130,7 @@ def start_game(json):
 def get_current_answer(json):
     set_valid_answer(request, json, game, socketio, messageReceived)
 
-
+#Affiche la reponse actuelle
 @socketio.on('Evt_party_get_current_answer')
 def get_current_answer(json):
     displays_current_answer(request, json, game, socketio, messageReceived)

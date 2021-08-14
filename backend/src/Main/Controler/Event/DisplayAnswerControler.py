@@ -18,6 +18,7 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
     # On ne recupere que les info uttile
     map: Dict = {}
 
+
     print(all_player_answer)
     map["question"] = all_player_answer[0].question.get_json()
 
@@ -29,7 +30,8 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
             "name": rep.player.name,
             "answer": rep.response,
             "valid": True,
-            "id": rep.id
+            "id": rep.id,
+            "position":rep.position
         }
 
         list.append(ellem)

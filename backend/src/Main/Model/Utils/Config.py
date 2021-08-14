@@ -1,0 +1,2 @@
+RESSOUCE_FILE ="";
+IMAGE_FILE = RESSOUCE_FILE+"/images"

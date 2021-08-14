@@ -1,5 +1,6 @@
 import random  # define the random module
 import string
+import traceback
 
 from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
@@ -57,11 +58,17 @@ class Party:
     def counter_down(self):
         self.counter = self.counter - 1
 
+    #Retourne la question actuelle
     def get_current_question(self):
+        print("Get curent question for the postion : "+str(self.counter))
         if len(self.questionList) > 0 and -1 < self.counter <= len(self.questionList):
             return self.questionList[self.counter - 1]
         else:
             return None
+
+    #Retourne la question precedente
+    def get_previous_question(self):
+        return self.questionList[self.counter%len(self.questionList)]
 
     def generate_question(self):
         self.questionList = [QuestionText('Qui Mange des Pomme', 'Chirac'),
@@ -84,6 +91,9 @@ class Party:
        '''
 
     def get_all_reponece(self, position=-1, player_position=-1):
+        print("Conteure :"+str(position))
+        #On inversse la postion pour resortir en premier les question qui on ete posse au debut
+        inversed_position = len(self.listReponce)-position-1;
         # SI on ne lui met pas d'argument cest que lon veux toute les reponce
         if (position == -1):
             return self.listReponce
@@ -108,7 +118,13 @@ class Party:
     Retourne tout les uttilise pour une question donne
     '''
     def get_curent_question_with_all_player(self):
-        return self.get_all_reponece(self.answer_counter-1)
+        if self.answer_counter > 0 :
+            return self.get_all_reponece(self.answer_counter-1)
+
+        print("Un bug est survenus avec un cnteure negative")
+        traceback.print_stack()
+        return [];
+
 
     '''
     Met a jour la reponce pour dire si elle est corecte ou non 
@@ -120,13 +136,13 @@ class Party:
         id = json["id"];
         valid = json["valid"]
         for rep in self.listReponce:
-            if rep.id == id :
-
+            if str(rep.id) == str(id) :
                 if valid :
                     rep.isCorect()
                 else:
                     rep.isIncorect()
-            break;
+                break;
+
 
     def increase_validation_count(self):
         self.nb_player_send_validation +=1;

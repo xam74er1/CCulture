@@ -28,6 +28,7 @@ def auto_fill_party_wth_answer(request: Request, json, game: Game, socketio, mes
         c = 'A'
         for playerL in party.playerList:
             playerL: Player = playerL
+            #print(playerL.name)
             rep = Response("Reponce for player " + playerL.name + " for question " + str(i), playerL, question, i)
             party.add_reponce(rep)
 
