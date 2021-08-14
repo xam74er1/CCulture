@@ -37,7 +37,7 @@ def set_valid_answer(request: Request, json, game: Game, socketio, message_recei
 
             res = get_player_score(party);
             print(res)
-            party.send_event_to_player("Evt_party_final_results", {'result': res}, socketio, None)
+            party.send_event_to_player("Evt_party_final_results", res, socketio, None)
 
 
 def get_player_score(party : Party):
