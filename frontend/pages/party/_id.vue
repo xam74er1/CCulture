@@ -125,11 +125,7 @@ export default {
   },
   methods: {
     sendResponse () {
-      var player_reponse = this.$store.state.party.playerResponse;
-      if (player_reponse ==null){
-        player_reponse = "";
-      }
-      this.socket.emit('Evt_party_game_send_response',player_reponse )
+      this.socket.emit('Evt_party_game_send_response', this.$store.state.party.playerResponse)
       this.$store.commit('party/setPlayerResponse', '')
     },
     getNextAnswer () {
