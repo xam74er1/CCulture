@@ -7,6 +7,7 @@
       <div class="md:col-span-2 p-1.5">
         <Question v-if="currentQuestion!==null && gameStatus === 'started'" />
         <AnswerList v-if="gameStatus === 'answer'" :all-response="allResponse" />
+        <Results v-if="gameStatus==='results'" />
       </div>
       <div>
         <PlayersList :players="players" />
@@ -40,14 +41,16 @@
 
 <script>
 import { status } from '@/components/uttils/utils'
+import Error from '@/components/common/Error'
 import StartGameButton from '@/components/party/StartGameButton'
 import Title from '@/components/party/Title'
 import PlayersList from '@/components/PlayersList'
-import Question from '../../components/party/Question'
-import AnswerList from '../../components/party/AnswerList'
+import Results from '@/components/party/Results'
+import Question from '@/components/party/Question'
+import AnswerList from '@/components/party/AnswerList'
 
 export default {
-  components: { StartGameButton, Title, AnswerList, Question, PlayersList },
+  components: { StartGameButton, Title, AnswerList, Question, PlayersList, Results, Error },
   data () {
     return {
       id: this.$route.params.id,
@@ -104,6 +107,7 @@ export default {
       console.log('Evt_party_final_results')
       console.log(evt)
       this.$store.commit('party/setGameStatus', status.RESULTS)
+      this.$store.commit('party/setFinalsResults', evt)
     })
 
     this.socket.on('Evt_error', (evt) => {
