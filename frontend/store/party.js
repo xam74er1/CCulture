@@ -5,7 +5,7 @@ export const state = () => ({
   players: [],
   gameStatus: status.PENDING,
   currentQuestion: null,
-  playerResponse: null
+  playerResponse: ''
 })
 
 export const mutations = {
@@ -25,6 +25,10 @@ export const mutations = {
     state.currentQuestion = question
   },
   setPlayerResponse (state, response) {
-    state.playerResponse = response
+    if (response !== null) {
+      state.playerResponse = response
+    } else {
+      state.playerResponse = ''
+    }
   }
 }

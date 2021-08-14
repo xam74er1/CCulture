@@ -126,7 +126,7 @@ export default {
   methods: {
     sendResponse () {
       this.socket.emit('Evt_party_game_send_response', this.$store.state.party.playerResponse)
-      this.$store.commit('party/setPlayerResponse', null)
+      this.$store.commit('party/setPlayerResponse', '')
     },
     getNextAnswer () {
       this.socket.emit('Evt_party_get_current_answer', '')
