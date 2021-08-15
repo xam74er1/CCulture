@@ -11,7 +11,7 @@ Question qui genere automatiqument des drapeaux de pays
 class QuestionLeaveCountryFlag(QuestionLeaves):
 
     def __init__(self,  name: str = "root", poids=1):
-        super(QuestionLeaveCountryFlag, self).__init__(None,name,poids)
+        super().__init__(None,name,poids)
 
 
     def get_question(self):

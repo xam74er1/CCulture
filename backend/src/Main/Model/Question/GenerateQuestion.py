@@ -6,6 +6,10 @@ from random import random
 from backend.src.Main.Model.Question.QuestionText import QuestionText
 from backend.src.Main.Model.Question.question import Question
 
+#Statistique pour le nombre de question :
+# Question sur les drapeau : 197
+# Question sur les captitalle : 197 (A faire)
+
 list_csv_file=["question.csv"]
 def generateQuestion(root_path="backend/ressouces/"):
     list_question = []
