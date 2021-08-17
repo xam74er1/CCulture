@@ -30,7 +30,7 @@ socketio = SocketIO(app, cors_allowed_origins=[
 clients = []
 game = Game()
 Game.currentGame = game
-#Connextion a la bdd
+# Connextion a la bdd
 DAOConnextion()
 
 t = Party(3, [QuestionText.QuestionText('Qui Mange des Pomme', 'Chirac').get_json(), QuestionText.QuestionText(
@@ -113,8 +113,8 @@ def configure_party():
 
 @socketio.on('setting')
 def response_event(json, methods=['GET', 'POST']):
-    Propa = jsonlib.loads(jsonlib.dumps(json))
-    print(str(Propa))
+    props = jsonlib.loads(jsonlib.dumps(json))
+    print(str(props))
 
 
 @socketio.on('TypeList')

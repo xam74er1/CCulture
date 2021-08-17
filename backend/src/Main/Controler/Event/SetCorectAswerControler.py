@@ -35,30 +35,30 @@ def set_valid_answer(request: Request, json, game: Game, socketio, message_recei
                 rep: Response = aw
                 print(str(rep.response) + " :  +" + str(rep.corect) + " " + str(rep.incorect))
 
-            res = get_player_score(party);
+            res = get_player_score(party)
             print(res)
             party.send_event_to_player("Evt_party_final_results", res, socketio, None)
 
 
-def get_player_score(party : Party):
+def get_player_score(party: Party):
     result = []
-    for player  in party.playerList:
-        print("Pour le joeure"+player.name)
-        all_reponce = party.get_all_reponce_for_player(player)
-        conteur = 0
-        for rep  in all_reponce:
+    for player in party.playerList:
+        print("Pour le joeure" + player.name)
+        all_responses = party.get_all_reponce_for_player(player)
+        counter = 0
+        for rep in all_responses:
             if rep.is_valid_aswer():
-               conteur += 1
-               print("Nombre de point : "+str(conteur)+"  "+str(rep.is_valid_aswer()))
+                counter += 1
+                print("Nombre de point : " + str(counter) + "  " + str(rep.is_valid_aswer()))
         result.append({
-            "name" : player.name,
-            "points" : conteur
+            "name": player.name,
+            "points": counter
         })
 
-    print("Avant "+str(result))
-    result = sorted(result, key=lambda k: k['points'],reverse=True)
-    postion = 1;
+    print("Avant " + str(result))
+    result = sorted(result, key=lambda k: k['points'], reverse=True)
+    position = 1
     for tmp in result:
-        tmp["rank"] = postion
-        postion+=1
-    return {"result":result}
+        tmp["rank"] = position
+        position += 1
+    return {"result": result}

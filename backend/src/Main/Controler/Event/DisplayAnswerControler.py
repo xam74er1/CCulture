@@ -16,31 +16,31 @@ def displays_current_answer(request: Request, json, game: Game, socketio, messag
     all_player_answer = party.get_curent_question_with_all_player()
 
     # On ne recupere que les info uttile
-    map: Dict = {}
+    res: Dict = {}
 
     print(all_player_answer)
-    #Si ya un bug et que aucune donne n'est retoune
-    if len(all_player_answer) <1 :
-        print("Un pbr est survenus : "+str(party.answer_counter))
+    # Si ya un bug et que aucune donne n'est retoune
+    if len(all_player_answer) < 1:
+        print("Un pbr est survenus : " + str(party.answer_counter))
         return
-    map["question"] = all_player_answer[0].question.get_json()
+    res["question"] = all_player_answer[0].question.get_json()
 
-    list = []
+    all_responses = []
     for rep in all_player_answer:
         rep: Response = rep
 
-        ellem = {
+        element = {
             "name": rep.player.name,
             "answer": rep.response,
-            "valid": (len(rep.response) >0 ),
+            "valid": (len(rep.response) > 0),
             "id": rep.id,
             "position": rep.position
         }
 
-        list.append(ellem)
+        all_responses.append(element)
 
-    map["allResponse"] = list
+    res["allResponse"] = all_responses
 
-    map["isLast"]: False
+    res["isLast"]: False
 
-    party.send_event_to_player("Evt_party_send_new_answers", map, socketio, None)
+    party.send_event_to_player("Evt_party_send_new_answers", res, socketio, None)
