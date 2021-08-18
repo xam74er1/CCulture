@@ -6,6 +6,7 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
 
+from backend.src.Main.Controler.DisconectedControler import DisconectControler, ConnectControler
 from backend.src.Main.Controler.Event.DisplayAnswerControler import displays_current_answer
 from backend.src.Main.Controler.Event.PartyNewPlayerControler import \
     party_new_player_controller
@@ -41,7 +42,7 @@ t = Party(3, [QuestionText.QuestionText('Qui Mange des Pomme', 'Chirac').get_jso
 @socketio.event
 def connect():
     print('connection established')
-    print(request.sid)
+    ConnectControler(request, None, game, socketio, messageReceived)
     clients.append(request.namespace)
 
 
@@ -71,6 +72,15 @@ def join_game(json):
 
 # Event lorsque un joeur rejoin une partie deja existant
 
+
+@socketio.on('disconnect')
+def disconectB():
+    print("Deconextion")
+
+@socketio.event
+def disconnect():
+    print('disconnected from server')
+    DisconectControler(request, None, game, socketio, messageReceived)
 
 @socketio.on('Evt_party_join')
 def check_party_join(json):

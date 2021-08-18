@@ -161,3 +161,11 @@ class Party:
     def next_aswer(self):
         self.answer_counter -=1;
 
+    def havePlayerName(self,name:str):
+
+        for p in self.playerList:
+            if p.name == name :
+                return True
+
+        return False
+

@@ -17,7 +17,13 @@ def party_new_player_controller(request: Request, json, game: Game, socketio, me
     if party is not None and player is not None:
         if json == party.id:
             player.last_session_id = request.sid
- 
+
+            # Si le pseudo existe deja nous ne l'autorison pas a rejoindre
+            if party.havePlayerName(player.name):
+                socketio.emit("Evt_error", "Impossile de rejoindre la party : Il y a deja un joeur avec le pseudo " + player.name, room=request.sid,
+                              callback=message_received)
+                return
+
             # Je rajoute le player
             party.add_player(player)
             # On recupere la liste de tout les player pour les renvoyer

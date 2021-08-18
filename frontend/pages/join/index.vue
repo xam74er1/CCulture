@@ -21,6 +21,22 @@
             >
           </div>
 
+            <div class="pt-4 ">
+          <a
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer"
+            @click="create"
+          >
+            <span class="absolute left-0 inset-y-0 flex items-center pl-3" />
+            Cree une partie
+          </a>
+        </div>
+
+          <div class="flex justify-center m-8 p-2 ">
+            <p>
+              Ou
+            </p>
+          </div>
+
           <div>
             <label for="gameId" class="sr-only">Id de la partie</label>
             <input
@@ -91,6 +107,13 @@ export default {
     join () {
       this.socket.emit('Evt_join_game', {
         gameId: this.gameId,
+        sid: this.socket.io.engine.id,
+        pseudoId: this.pseudoId
+      })
+    },
+    create(){
+        this.socket.emit('Evt_join_game', {
+        gameId: "",
         sid: this.socket.io.engine.id,
         pseudoId: this.pseudoId
       })

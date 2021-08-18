@@ -1,3 +1,6 @@
+import random
+
+
 class Question:
     def __init__(self, id=0, category=""):
         self.id = id
@@ -7,3 +10,5 @@ class Question:
 
     def get_json(self):
         return self.__dict__
+
+
