@@ -21,12 +21,15 @@ class Party:
         self.generate_question()
         self.listReponce: [Response] = [];
         self.nb_player_send_validation = 0;
+        self.party_leader : Player = None
 
     def generate_random_url(self, size):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=size))
 
     def add_player(self, player):
         self.playerList.append(player)
+        if self.party_leader == None:
+            self.party_leader = player
 
     def get_pseudo_player_list(self):
         plist = []
@@ -40,7 +43,8 @@ class Party:
         plist = []
 
         for player in self.playerList:
-            plist.append({"id": player.uuid, "name": player.name})
+            if player.is_active :
+                plist.append({"id": player.uuid, "name": player.name})
         return plist
 
     def send_event_to_player(self, event_name, json, socketio, message_received):

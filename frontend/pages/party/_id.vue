@@ -126,8 +126,19 @@ export default {
         this.allResponse = evt.allResponse
       }
     })
+
+    this.socket.on('Evt_party_player_disconected', (evt) => {
+      console.log('Evt_party_player_disconected')
+
+    })
+
+
+    window.addEventListener('beforeunload', this.deconextion)
   },
   methods: {
+    deconextion(){
+      this.socket.emit('disconnect', "disconected")
+    },
     sendResponse () {
       this.socket.emit('Evt_party_game_send_response', this.$store.state.party.playerResponse)
       this.$store.commit('party/setPlayerResponse', '')

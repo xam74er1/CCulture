@@ -1,3 +1,4 @@
+import flask
 from flask import Request
 
 from backend.src.Main.Model.Game import Game
@@ -14,5 +15,5 @@ def response_controller(request: Request, json, game: Game, socketio, message_re
         question: Question = party.get_previous_question()
         print("Reponce recus : " + str(json) + " mise a la postion " + str(party.counter) + " for the question " + str(
             question.get_json()))
-        response = Response(json, player, question, party.counter)
+        response = Response(flask.escape(json), player, question, party.counter)
         party.add_reponce(response)

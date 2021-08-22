@@ -1,3 +1,4 @@
+import flask
 from flask import Request, session
 
 # Todo : Pense a rajoute la liste des player dans le controler
@@ -13,12 +14,11 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
 
     # form = request.form
     if "gameId" in json:
-        game_id = json["gameId"]
+        game_id = flask.escape(json["gameId"])
     else:
         game_id = None
     sid = request.sid
-    pseudo = json["pseudoId"]
-
+    pseudo = flask.escape(json["pseudoId"])
     # Creation du player si il nexiste pas
     if 'uuid' in session:
         # Le player existe deja
@@ -52,12 +52,25 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
 
         #Si le pseudo existe deja nous ne l'autorison pas a rejoindre
         if party.havePlayerName(player.name):
-            socketio.emit("Evt_error", "Il y a deja un joeur avec le pseudo "+player.name, room=sid, callback=message_received)
-            return
-        Game.get_game()
+            print("Il y a deja un player avec ce nom")
 
-        to_return = {"party_id": party.id, "player_id": player.uuid}
-        socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
+            find = False
+            # On chersse si le player le player avec le meme nom est deco , si cela est le cas on lui permet de ce reconected
+            for p in party.playerList:
+                if p.name == player.name and not p.is_active:
+                    # On a trouve le player in le fait donc ce reconnecte
+                    find = True
+                    p: Player = p
+                    p.last_session_id = player.last_session_id
+                    p.uuid = player.uuid
+
+                    player = p;
+                    connect_player(party,player,sid, socketio, message_received)
+
+            if not find:
+                socketio.emit("Evt_error", "Il y a deja un joeur avec le pseudo "+player.name, room=sid, callback=message_received)
+                return
+        connect_player(party, player, sid, socketio, message_received)
 
         return
     print("Cette partie n'existe pas")
@@ -67,3 +80,8 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
 
 def ack():
     print("msg receive")
+
+def  connect_player(party,player,sid, socketio, message_received) :
+    Game.get_game()
+    to_return = {"party_id": party.id, "player_id": player.uuid}
+    socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
