@@ -5,7 +5,7 @@ from backend.src.Main.Model.Party import Party
 from backend.src.Main.Model.Player import Player
 
 
-def DisconectControler(request: Request, json, game: Game, socketio, message_received):
+def disconnect_controller(request: Request, json, game: Game, socketio, message_received):
     try:
         player: Player = game.get_player_static()
     except Exception:
@@ -15,24 +15,26 @@ def DisconectControler(request: Request, json, game: Game, socketio, message_rec
 
     party: Party = game.get_party_static()
 
-    #Si le leader a quitter la partie
+    # Si le leader a quitter la partie
     if party.party_leader.name == player.name:
-        #Si il reste au moin un joeure active on lui donne le leade
+        # Si il reste au moin un joeure active on lui donne le leade
         for p in party.playerList:
-            if p.is_active :
+            if p.is_active:
                 party.party_leader = p
                 break
 
-    list_avaible_player = []
+    list_available_players = []
     for p in party.playerList:
         if p.is_active:
-            list_avaible_player.append(p.name)
+            list_available_players.append(p.name)
 
-    #On notifie tout les joeure que un joeure a deco
-    party.send_event_to_player("Evt_party_player_disconected",{"leader":party.party_leader.name,"player_list":list_avaible_player},socketio,None)
+    # On notifie tout les joeure que un joeure a deco
+    party.send_event_to_player("Evt_party_player_disconnected",
+                               {"leader": party.party_leader.name, "player_list": party.get_player_list()}, socketio,
+                               None)
 
 
-def ConnectControler(request: Request, json, game: Game, socketio, message_received):
+def connect_controller(request: Request, json, game: Game, socketio, message_received):
     try:
         player: Player = game.get_player_static()
     except Exception:

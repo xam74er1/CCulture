@@ -50,7 +50,15 @@ import Question from '@/components/party/Question'
 import AnswerList from '@/components/party/AnswerList'
 
 export default {
-  components: { StartGameButton, Title, AnswerList, Question, PlayersList, Results, Error },
+  components: {
+    StartGameButton,
+    Title,
+    AnswerList,
+    Question,
+    PlayersList,
+    Results,
+    Error
+  },
   data () {
     return {
       id: this.$route.params.id,
@@ -73,7 +81,10 @@ export default {
     }
   },
   mounted () {
-    this.socket = this.$nuxtSocket({ name: 'main', persist: 'mainSocket' })
+    this.socket = this.$nuxtSocket({
+      name: 'main',
+      persist: 'mainSocket'
+    })
 
     this.socket.emit('Evt_party_join', this.id)
 
@@ -81,6 +92,13 @@ export default {
       console.log(evt)
       if ('players' in evt && Array.isArray(evt.players)) {
         this.$store.commit('party/setPlayers', evt.players)
+      }
+    })
+
+    this.socket.on('Evt_party_player_disconnected', (evt) => {
+      console.log(evt)
+      if ('leader' in evt && 'player_list' in evt && Array.isArray(evt.player_list)) {
+        this.$store.commit('party/setPlayers', evt.player_list)
       }
     })
 
@@ -126,19 +144,8 @@ export default {
         this.allResponse = evt.allResponse
       }
     })
-
-    this.socket.on('Evt_party_player_disconected', (evt) => {
-      console.log('Evt_party_player_disconected')
-
-    })
-
-
-    window.addEventListener('beforeunload', this.deconextion)
   },
   methods: {
-    deconextion(){
-      this.socket.emit('disconnect', "disconected")
-    },
     sendResponse () {
       this.socket.emit('Evt_party_game_send_response', this.$store.state.party.playerResponse)
       this.$store.commit('party/setPlayerResponse', '')

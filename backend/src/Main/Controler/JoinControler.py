@@ -50,7 +50,7 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
     if party is not None:
         player.current_party_id = party.id
 
-        #Si le pseudo existe deja nous ne l'autorison pas a rejoindre
+        # Si le pseudo existe deja nous ne l'autorison pas a rejoindre
         if party.havePlayerName(player.name):
             print("Il y a deja un player avec ce nom")
 
@@ -64,11 +64,12 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
                     p.last_session_id = player.last_session_id
                     p.uuid = player.uuid
 
-                    player = p;
-                    connect_player(party,player,sid, socketio, message_received)
+                    player = p
+                    connect_player(party, player, sid, socketio, message_received)
 
             if not find:
-                socketio.emit("Evt_error", "Il y a deja un joeur avec le pseudo "+player.name, room=sid, callback=message_received)
+                socketio.emit("Evt_error", "Il y a deja un joeur avec le pseudo " + player.name, room=sid,
+                              callback=message_received)
                 return
         connect_player(party, player, sid, socketio, message_received)
 
@@ -81,7 +82,8 @@ def join_controller(request: Request, json, game: Game, socketio, message_receiv
 def ack():
     print("msg receive")
 
-def  connect_player(party,player,sid, socketio, message_received) :
+
+def connect_player(party, player, sid, socketio, message_received):
     Game.get_game()
     to_return = {"party_id": party.id, "player_id": player.uuid}
     socketio.emit("Evt_redirect_game_id", to_return, room=sid, callback=message_received)
