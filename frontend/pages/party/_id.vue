@@ -97,8 +97,8 @@ export default {
 
     this.socket.on('Evt_party_player_disconnected', (evt) => {
       console.log(evt)
-      if ('leader' in evt && 'player_list' in evt && Array.isArray(evt.player_list)) {
-        this.$store.commit('party/setPlayers', evt.player_list)
+      if ('leader' in evt && 'players' in evt && Array.isArray(evt.players)) {
+        this.$store.commit('party/setPlayers', evt.players)
       }
     })
 
