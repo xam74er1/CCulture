@@ -23,14 +23,9 @@ def disconnect_controller(request: Request, json, game: Game, socketio, message_
                 party.party_leader = p
                 break
 
-    list_available_players = []
-    for p in party.playerList:
-        if p.is_active:
-            list_available_players.append(p.name)
-
     # On notifie tout les joeure que un joeure a deco
     party.send_event_to_player("Evt_party_player_disconnected",
-                               {"leader": party.party_leader.name, "player_list": party.get_player_list()}, socketio,
+                               {"leader": party.party_leader.name, "players": party.get_player_list(),"player_name":player.name}, socketio,
                                None)
 
 

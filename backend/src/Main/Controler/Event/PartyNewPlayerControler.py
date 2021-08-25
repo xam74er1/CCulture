@@ -45,7 +45,7 @@ def party_new_player_controller(request: Request, json, game: Game, socketio, me
             # Je rajoute le player
             party.add_player(player)
             # On recupere la liste de tout les player pour les renvoyer
-            connect_player(party, socketio, message_received)
+            connect_player(party,player, socketio, message_received)
         else:
             socketio.emit("Evt_error",
                           "Vous ne pouvez pas rejoindre cette partie ! (Vous avez rejoin la mauvaise partie , merci de passer par join)",
@@ -56,9 +56,9 @@ def party_new_player_controller(request: Request, json, game: Game, socketio, me
                       room=request.sid, callback=message_received)
 
 
-def connect_player(party: Party, socketio, message_received):
+def connect_player(party: Party,player, socketio, message_received):
     # On recupere la liste de tout les player pour les renvoyer
-    to_return = {"players": party.get_player_list()}
+    to_return = {"players": party.get_player_list(),"player_name":player.name,"leader": party.party_leader.name}
 
     party.send_event_to_player("Evt_party_new_player_as_join", to_return, socketio,
                                message_received)
