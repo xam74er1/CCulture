@@ -21,15 +21,20 @@ class QuestionTree:
     Le principe est que tantque lon a pas une feuille on continue a decendre
     '''
 
-    def getRandomQuestion(self):
-
+    def getRandomQuestion(self,question_list: [Question]=[]):
+        #print(self.name)
         child = self.__getRandomChild__()
-        while type(child) != backend.src.Main.Model.Question.QuestionTree.QuestionLeaves.QuestionLeaves:
+        typed = type(child)
+
+        while typed  != backend.src.Main.Model.Question.QuestionTree.QuestionLeaves.QuestionLeaves and not issubclass(typed ,backend.src.Main.Model.Question.QuestionTree.QuestionLeaves.QuestionLeaves):
             child = child.__getRandomChild__()
+            typed = type(child)
+
 
         feuille = child
         # On retoune une question quelquon de la liste
-        return feuille.get_question()
+        qest = feuille.get_question()
+        return qest
 
     def get_question(self):
         return self.getRandomQuestion()
@@ -46,6 +51,7 @@ class QuestionTree:
     '''
 
     def __getRandomChild__(self):
+        #print("rdm child "+self.name)
         sum = 0;
         # On conte le poids total
         for child in self.childs:
@@ -54,12 +60,16 @@ class QuestionTree:
         cnt = 0;
         # On tire un seuille
         rmd_number = random.random()
+        #print("Sum "+str(sum)+" rdm"+str(rmd_number))
         for tree in self.childs:
             tree: QuestionTree = tree
-            cnt += tree.poids
+            cnt += tree.poids/sum
+            #print("\t cnt \t "+str(cnt))
             # Si on depasse le num random cest que lon a trouve lellment
             if cnt > rmd_number:
+                print("\t retrun "+tree.name)
                 return tree
+        print("return NONE")
         return None
 
     '''

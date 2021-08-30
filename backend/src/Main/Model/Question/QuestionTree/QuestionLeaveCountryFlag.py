@@ -22,6 +22,6 @@ class QuestionLeaveCountryFlag(QuestionLeaves):
         flag_name = flag_name.lower()
         path =Config.IMAGE_FILE+"country_flag/"+flag_name+".png";
         try:
-            return QuestionImage("Quelle pays represente ce drapeau ?",country_name,path,True)
+            return QuestionImage("Quelle pays represente ce drapeau ?",country_name,path,True,category="geo")
         except :
             return None

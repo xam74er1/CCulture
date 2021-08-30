@@ -19,4 +19,4 @@ class QuestionImage(QuestionText):
     def toBase64(self,imagePath):
         with open(imagePath, "rb") as image_file:
             self.image = base64.b64encode(image_file.read())
-        print(self.image)
+        #print(self.image)

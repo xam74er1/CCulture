@@ -2,11 +2,13 @@ import random  # define the random module
 import string
 import traceback
 
+import backend
 from backend.src.Main.Model.Player import Player
 from backend.src.Main.Model.Question import question
 from backend.src.Main.Model.Question.QuestionImage import QuestionImage
 from backend.src.Main.Model.Question.QuestionText import QuestionText
 from backend.src.Main.Model.Question.QuestionTree.QuestionLeaveCountryFlag import QuestionLeaveCountryFlag
+from backend.src.Main.Model.Question.QuestionTree.QuestionTree import QuestionTree
 from backend.src.Main.Model.Question.Response import Response
 
 
@@ -76,12 +78,16 @@ class Party:
         return self.questionList[self.counter%len(self.questionList)]
 
     def generate_question(self):
-        contry_flag = QuestionLeaveCountryFlag()
-        self.questionList = [QuestionText('Qui Mange des Pomme', 'Chirac'),
-                             QuestionText('Qui Mange des Pomme2', 'Chirac'),
-                             QuestionText('Qui Mange des Pomme3', 'Chirac'),
-                             contry_flag.get_question()
-                             ]
+        self.questionList = []
+        root : QuestionTree = backend.src.Main.Model.Game.Game.currentGame.root
+
+        i =0
+        while(i<10):
+            question= root.get_question()
+            if question != None :
+                self.questionList.append(question)
+                i+=1
+
         self.counter = len(self.questionList)
         self.answer_counter =len(self.questionList)
 

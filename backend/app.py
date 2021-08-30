@@ -19,6 +19,7 @@ from backend.src.Main.Controler.LobbyControler import lobby_controller
 from backend.src.Main.Model.Game import Game
 from backend.src.Main.Model.Party import Party
 from backend.src.Main.Model.Question import QuestionText
+from backend.src.Main.Model.Question.GenerateQuestion import generateQuestion
 from backend.src.Main.Model.Utils.SqliteDAO import DAOConnextion
 from backend.src.Main.Scheduler import next_question_party
 from backend.src.Test.Controler.AutoFillPartyWithAnswer import auto_fill_party_wth_answer
@@ -33,6 +34,8 @@ game = Game()
 Game.currentGame = game
 # Connextion a la bdd
 DAOConnextion()
+
+Game.currentGame.root = generateQuestion();
 
 t = Party(3, [QuestionText.QuestionText('Qui Mange des Pomme', 'Chirac').get_json(), QuestionText.QuestionText(
     'Qui Mange des Pomme2', 'Chirac').get_json(),

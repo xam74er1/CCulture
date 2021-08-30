@@ -10,8 +10,14 @@ class QuestionLeaves(QuestionTree):
         self.question_list : [Question] = question_list
 
     def get_question(self):
-        self.getRandomQuestion(self.question_list)
+        #print("quest question leaves "+self.name)
+        return self.getRandomQuestion(self.question_list)
 
-    def getRandomQuestion(question_list: [Question]):
-        return random.choice(question_list)
+    def getRandomQuestion(self,question_list: [Question]):
+        #print(len(question_list))
+        if len(question_list) == 0:
+            return None
+        choix = random.choice(question_list)
+        #print("choix : "+str(choix))
+        return choix
         

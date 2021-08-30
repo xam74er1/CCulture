@@ -23,6 +23,6 @@ class QuestionLeaveCapital(QuestionLeaves):
             article = ""
 
         try:
-            return QuestionText(question="Quelle est la capitale de "+article+" "+country_name+" ?",response=capital)
+            return QuestionText(question="Quelle est la capitale de "+article+" "+country_name+" ?",response=capital,category="geo")
         except :
             return None

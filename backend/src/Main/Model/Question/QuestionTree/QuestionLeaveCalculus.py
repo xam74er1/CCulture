@@ -17,7 +17,7 @@ class QuestionLeaveCalculus(QuestionLeaves):
             print("PBR")
             eq= self.generate_equoition(["+","-","*"])
             res = eval(eq)
-        return QuestionText("Resoudre le calcule suivant : "+eq,"La solution est : "+str(res))
+        return QuestionText("Resoudre le calcule suivant : "+eq,"La solution est : "+str(res),category="math")
 
     def generate_equoition(self,sign_list):
         formule ="";

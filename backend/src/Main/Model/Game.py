@@ -2,6 +2,7 @@ from flask import session, request
 
 from backend.src.Main.Model.Party import Party
 from backend.src.Main.Model.Player import Player
+from backend.src.Main.Model.Question.QuestionTree.QuestionTree import QuestionTree
 
 
 class Game:
@@ -11,8 +12,8 @@ class Game:
         self.id = 0
         self.listParty: [Party] = []
         self.listPlayer: [Player] = []
-        self.listRunningParty: [
-            Party] = []  # Liste de toute les partie qui son en cour avec des question qui doive etre affiche les une apres les autre
+        self.listRunningParty: [Party] = []  # Liste de toute les partie qui son en cour avec des question qui doive etre affiche les une apres les autre
+        self.root : QuestionTree = None #Arbre pertant de ger toute les question
 
     def add_player(self, player: Player):
         self.listPlayer.append(player)
